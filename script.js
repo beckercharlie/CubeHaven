@@ -1,5 +1,5 @@
 // Game State
-let coins = 1000; // Starting with 1,000 coins as requested
+let coins = 1000;
 let cubes = 0;
 let cubesArray = [];
 let framedCubes = Array(10).fill(null);
@@ -10,7 +10,7 @@ let selectedCubeSource = null;
 const eggTiers = [
     { 
         name: "Basic", 
-        cost: 100, // Updated to 100 coins
+        cost: 100,
         odds: { 
             Common: 0.95, 
             Rare: 0.03, 
@@ -36,7 +36,7 @@ const eggTiers = [
     },
     { 
         name: "Silver", 
-        cost: 1000, // Updated to 1,000 coins
+        cost: 1000,
         odds: { 
             Common: 0.80, 
             Rare: 0.10, 
@@ -62,7 +62,7 @@ const eggTiers = [
     },
     { 
         name: "Gold", 
-        cost: 10000, // Updated to 10,000 coins
+        cost: 10000,
         odds: { 
             Common: 0.60, 
             Rare: 0.20, 
@@ -88,7 +88,7 @@ const eggTiers = [
     },
     { 
         name: "Diamond", 
-        cost: 100000, // Updated to 100,000 coins
+        cost: 100000,
         odds: { 
             Common: 0.40, 
             Rare: 0.25, 
@@ -114,7 +114,7 @@ const eggTiers = [
     },
     { 
         name: "Mythic", 
-        cost: 1000000, // Updated to 1,000,000 coins
+        cost: 1000000,
         odds: { 
             Common: 0.20, 
             Rare: 0.15, 
@@ -271,7 +271,6 @@ function initializeCubeImages() {
             gradient.addColorStop(1, "#FF4500");
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, 40, 40);
-            // Shimmer effect with radiating lines
             cube.animationTimer = (cube.animationTimer || 0) + 0.05;
             const shimmer = Math.sin(cube.animationTimer) * 5 + 15;
             ctx.strokeStyle = `rgba(255, 215, 0, ${Math.abs(Math.sin(cube.animationTimer))})`;
@@ -290,7 +289,6 @@ function initializeCubeImages() {
             gradient.addColorStop(1, "#4B0082");
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, 40, 40);
-            // Swirling vortex
             cube.animationTimer = (cube.animationTimer || 0) + 0.03;
             ctx.strokeStyle = "#FFFFFF";
             ctx.lineWidth = 1;
@@ -308,7 +306,6 @@ function initializeCubeImages() {
             gradient.addColorStop(1, "#191970");
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, 40, 40);
-            // Twinkling stars
             cube.particles = cube.particles || [];
             if (Math.random() < 0.1) {
                 cube.particles.push(new Particle(
@@ -327,7 +324,6 @@ function initializeCubeImages() {
             gradient.addColorStop(1, "#4B0082");
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, 40, 40);
-            // Glowing halo
             cube.animationTimer = (cube.animationTimer || 0) + 0.02;
             const glow = Math.sin(cube.animationTimer) * 2 + 15;
             ctx.strokeStyle = `rgba(255, 255, 255, ${Math.abs(Math.sin(cube.animationTimer))})`;
@@ -342,7 +338,6 @@ function initializeCubeImages() {
             gradient.addColorStop(1, "#4682B4");
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, 40, 40);
-            // Comet trail
             cube.animationTimer = (cube.animationTimer || 0) + 0.05;
             const angle = cube.animationTimer % (Math.PI * 2);
             ctx.strokeStyle = "#FFD700";
@@ -357,7 +352,6 @@ function initializeCubeImages() {
             gradient.addColorStop(1, "#000000");
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, 40, 40);
-            // Electric sparks
             cube.particles = cube.particles || [];
             if (Math.random() < 0.2) {
                 cube.particles.push(new Particle(
@@ -378,7 +372,6 @@ function initializeCubeImages() {
             gradient.addColorStop(1, "#000000");
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, 40, 40);
-            // Rippling void
             cube.animationTimer = (cube.animationTimer || 0) + 0.03;
             ctx.strokeStyle = `rgba(255, 255, 255, ${Math.abs(Math.sin(cube.animationTimer))})`;
             ctx.lineWidth = 1;
@@ -395,7 +388,6 @@ function initializeCubeImages() {
             gradient.addColorStop(1, "#000000");
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, 40, 40);
-            // Ghostly wisps
             cube.particles = cube.particles || [];
             if (Math.random() < 0.05) {
                 cube.particles.push(new Particle(
@@ -414,7 +406,6 @@ function initializeCubeImages() {
             gradient.addColorStop(1, "#000000");
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, 40, 40);
-            // Pulsating nebula
             cube.animationTimer = (cube.animationTimer || 0) + 0.02;
             const size = Math.sin(cube.animationTimer) * 5 + 20;
             const gradientNebula = ctx.createRadialGradient(20, 20, 0, 20, 20, size);
@@ -429,7 +420,6 @@ function initializeCubeImages() {
             gradient.addColorStop(1, "#9400D3");
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, 40, 40);
-            // Swirling nebula wisps
             cube.animationTimer = (cube.animationTimer || 0) + 0.01;
             ctx.strokeStyle = `rgba(255, 255, 255, 0.5)`;
             ctx.lineWidth = 1;
@@ -450,7 +440,6 @@ function initializeCubeImages() {
             gradient.addColorStop(1, "#000000");
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, 40, 40);
-            // Starbursts
             cube.animationTimer = (cube.animationTimer || 0) + 0.05;
             if (Math.random() < 0.1) {
                 cube.particles = cube.particles || [];
@@ -473,7 +462,6 @@ function initializeCubeImages() {
             gradient.addColorStop(1, "#000000");
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, 40, 40);
-            // Explosive burst
             cube.animationTimer = (cube.animationTimer || 0) + 0.03;
             const burst = (Math.sin(cube.animationTimer) + 1) * 10 + 10;
             ctx.fillStyle = `rgba(255, 255, 255, ${Math.abs(Math.sin(cube.animationTimer))})`;
@@ -487,7 +475,6 @@ function initializeCubeImages() {
             gradient.addColorStop(1, "#000000");
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, 40, 40);
-            // Spinning energy ring
             cube.animationTimer = (cube.animationTimer || 0) + 0.05;
             const angle = cube.animationTimer % (Math.PI * 2);
             ctx.strokeStyle = "#FF4500";
@@ -502,7 +489,6 @@ function initializeCubeImages() {
             gradient.addColorStop(1, "#FFFFFF");
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, 40, 40);
-            // Black hole effect
             cube.particles = cube.particles || [];
             if (Math.random() < 0.1) {
                 const angle = Math.random() * Math.PI * 2;
@@ -523,7 +509,6 @@ function initializeCubeImages() {
             gradient.addColorStop(1, "#000000");
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, 40, 40);
-            // Glowing core with orbiting particles
             cube.particles = cube.particles || [];
             cube.animationTimer = (cube.animationTimer || 0) + 0.05;
             if (Math.random() < 0.05) {
@@ -543,7 +528,6 @@ function initializeCubeImages() {
             gradient.addColorStop(1, "#000000");
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, 40, 40);
-            // Infinity symbol trace
             cube.animationTimer = (cube.animationTimer || 0) + 0.03;
             ctx.strokeStyle = "#FFD700";
             ctx.lineWidth = 2;
@@ -566,7 +550,6 @@ function initializeCubeImages() {
             gradient.addColorStop(1, "#000000");
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, 40, 40);
-            // Fiery eruption
             cube.particles = cube.particles || [];
             if (Math.random() < 0.2) {
                 cube.particles.push(new Particle(
@@ -653,7 +636,8 @@ function saveGame(showNotification = true) {
             targetX: cube.targetX,
             targetY: cube.targetY,
             state: cube.state,
-            pauseTimer: cube.pauseTimer
+            pauseTimer: cube.pauseTimer,
+            speed: cube.speed
         })),
         framedCubes: framedCubes.map(cube => cube ? { rarity: cube.rarity } : null)
     };
@@ -670,7 +654,7 @@ function loadGame() {
     const savedState = localStorage.getItem("cubeHavenSave");
     if (savedState) {
         const gameState = JSON.parse(savedState);
-        coins = gameState.coins || 1000; // Default to 1,000 if no save exists
+        coins = gameState.coins || 1000;
         cubes = gameState.cubes || 0;
         cubesArray = gameState.cubesArray.map(cube => ({
             rarity: cube.rarity,
@@ -681,6 +665,7 @@ function loadGame() {
             targetY: cube.targetY,
             state: cube.state,
             pauseTimer: cube.pauseTimer,
+            speed: cube.speed || (Math.random() * 0.4 + 0.3), // Default speed if not saved
             animationTimer: 0,
             particles: []
         }));
@@ -700,7 +685,7 @@ function restartGame() {
     if (!confirm("Are you sure you want to restart? All progress will be lost.")) {
         return;
     }
-    coins = 1000; // Reset to 1,000 coins
+    coins = 1000;
     cubes = 0;
     cubesArray = [];
     framedCubes = Array(10).fill(null);
@@ -717,36 +702,68 @@ function restartGame() {
     toggleSettingsDropdown();
 }
 
+// Helper Function to Check if Target is Too Close to Other Cubes
+function isTooCloseToOtherCubes(targetX, targetY, excludeCube) {
+    const minDistance = 40; // Minimum distance to prevent clustering (cube size is 40x40)
+    for (let cube of cubesArray) {
+        if (cube === excludeCube) continue;
+        const dx = targetX - cube.x;
+        const dy = targetY - cube.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < minDistance) {
+            return true;
+        }
+    }
+    return false;
+}
+
 // Cube Movement (for cubes in the fenced area)
 function moveCubes() {
     cubesArray.forEach(cube => {
+        if (!cube.speed) {
+            cube.speed = Math.random() * 0.4 + 0.3; // Random speed between 0.3 and 0.7 units per frame
+        }
+
         if (cube.state === "moving") {
             const dx = cube.targetX - cube.x;
             const dy = cube.targetY - cube.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
-            const speed = 0.5;
-            if (distance > speed) {
-                cube.x += (dx / distance) * speed;
-                cube.y += (dy / distance) * speed;
+            if (distance > cube.speed) {
+                cube.x += (dx / distance) * cube.speed;
+                cube.y += (dy / distance) * cube.speed;
             } else {
                 cube.x = cube.targetX;
                 cube.y = cube.targetY;
                 cube.state = "paused";
-                cube.pauseTimer = 2000;
+                cube.pauseTimer = Math.random() * 2500 + 500; // Random pause between 0.5 and 3 seconds
             }
         } else if (cube.state === "paused") {
             cube.pauseTimer -= 16;
             if (cube.pauseTimer <= 0) {
-                const angle = Math.random() * 2 * Math.PI;
-                const distance = Math.random() * 50 + 20;
-                cube.targetX = 200 + Math.cos(angle) * Math.min(distance, fenceRadius - 20);
-                cube.targetY = 200 + Math.sin(angle) * Math.min(distance, fenceRadius - 20);
-                const distFromCenter = Math.sqrt((cube.targetX - 200) ** 2 + (cube.targetY - 200) ** 2);
-                if (distFromCenter > fenceRadius - 20) {
-                    const scale = (fenceRadius - 20) / distFromCenter;
-                    cube.targetX = 200 + (cube.targetX - 200) * scale;
-                    cube.targetY = 200 + (cube.targetY - 200) * scale;
-                }
+                let attempts = 0;
+                const maxAttempts = 10;
+                let newTargetX, newTargetY, distFromCenter;
+
+                do {
+                    const angle = Math.random() * 2 * Math.PI;
+                    const distance = Math.random() * 140 + 20; // Random distance between 20 and 160
+                    newTargetX = 200 + Math.cos(angle) * distance;
+                    newTargetY = 200 + Math.sin(angle) * distance;
+                    distFromCenter = Math.sqrt((newTargetX - 200) ** 2 + (newTargetY - 200) ** 2);
+                    
+                    // Ensure the target is within the fence
+                    if (distFromCenter > fenceRadius - 20) {
+                        const scale = (fenceRadius - 20) / distFromCenter;
+                        newTargetX = 200 + (newTargetX - 200) * scale;
+                        newTargetY = 200 + (newTargetY - 200) * scale;
+                    }
+
+                    attempts++;
+                } while (isTooCloseToOtherCubes(newTargetX, newTargetY, cube) && attempts < maxAttempts);
+
+                cube.targetX = newTargetX;
+                cube.targetY = newTargetY;
+                cube.speed = Math.random() * 0.4 + 0.3; // Randomize speed for the next movement
                 cube.state = "moving";
             }
         }
@@ -806,6 +823,7 @@ function removeFromFrame(frameIndex) {
     cube.targetY = 200;
     cube.state = "paused";
     cube.pauseTimer = 0;
+    cube.speed = Math.random() * 0.4 + 0.3; // Assign a random speed when returning to fenced area
     cubesArray.push(cube);
     framedCubes[frameIndex] = null;
     renderFramedCubes();
@@ -841,6 +859,7 @@ function rollCube(tierIndex) {
         targetY: 200,
         state: "paused",
         pauseTimer: 0,
+        speed: Math.random() * 0.4 + 0.3, // Initialize with a random speed
         animationTimer: 0,
         particles: []
     };
@@ -877,7 +896,7 @@ elements.settingsToggle.addEventListener("click", () => {
 
 // Save Game Button
 elements.saveGame.addEventListener("click", () => {
-    saveGame(true); // Show notification for manual save
+    saveGame(true);
 });
 
 // Restart Game Button
@@ -1021,8 +1040,8 @@ updateGameState();
 
 // Auto-Save Every 3 Minutes
 setInterval(() => {
-    saveGame(false); // Auto-save without notification
-}, 180000); // 3 minutes = 180,000 milliseconds
+    saveGame(false);
+}, 180000);
 
 // Starry Background Animation
 class Star {
