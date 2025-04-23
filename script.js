@@ -1,5 +1,5 @@
 // Game State
-let coins = 5000;
+let coins = 1000;
 let cubes = 0;
 let cubesArray = [];
 let framedCubes = Array(10).fill(null);
@@ -10,7 +10,7 @@ let selectedCubeSource = null;
 const eggTiers = [
     { 
         name: "Basic", 
-        cost: 10, 
+        cost: 100, 
         odds: { 
             Common: 0.95, 
             Rare: 0.03, 
@@ -36,7 +36,7 @@ const eggTiers = [
     },
     { 
         name: "Silver", 
-        cost: 100, 
+        cost: 1000, 
         odds: { 
             Common: 0.80, 
             Rare: 0.10, 
@@ -62,7 +62,7 @@ const eggTiers = [
     },
     { 
         name: "Gold", 
-        cost: 1000, 
+        cost: 10000, 
         odds: { 
             Common: 0.60, 
             Rare: 0.20, 
@@ -88,7 +88,7 @@ const eggTiers = [
     },
     { 
         name: "Diamond", 
-        cost: 10000, 
+        cost: 100000, 
         odds: { 
             Common: 0.40, 
             Rare: 0.25, 
@@ -114,7 +114,7 @@ const eggTiers = [
     },
     { 
         name: "Mythic", 
-        cost: 100000, 
+        cost: 1000000, 
         odds: { 
             Common: 0.20, 
             Rare: 0.15, 
