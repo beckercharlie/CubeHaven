@@ -1,5 +1,5 @@
 // Game State
-let coins = 1000;
+let coins = 1000; // Starting with 1,000 coins as requested
 let cubes = 0;
 let cubesArray = [];
 let framedCubes = Array(10).fill(null);
@@ -10,7 +10,7 @@ let selectedCubeSource = null;
 const eggTiers = [
     { 
         name: "Basic", 
-        cost: 100, 
+        cost: 100, // Updated to 100 coins
         odds: { 
             Common: 0.95, 
             Rare: 0.03, 
@@ -36,7 +36,7 @@ const eggTiers = [
     },
     { 
         name: "Silver", 
-        cost: 1000, 
+        cost: 1000, // Updated to 1,000 coins
         odds: { 
             Common: 0.80, 
             Rare: 0.10, 
@@ -62,7 +62,7 @@ const eggTiers = [
     },
     { 
         name: "Gold", 
-        cost: 10000, 
+        cost: 10000, // Updated to 10,000 coins
         odds: { 
             Common: 0.60, 
             Rare: 0.20, 
@@ -88,7 +88,7 @@ const eggTiers = [
     },
     { 
         name: "Diamond", 
-        cost: 100000, 
+        cost: 100000, // Updated to 100,000 coins
         odds: { 
             Common: 0.40, 
             Rare: 0.25, 
@@ -114,7 +114,7 @@ const eggTiers = [
     },
     { 
         name: "Mythic", 
-        cost: 1000000, 
+        cost: 1000000, // Updated to 1,000,000 coins
         odds: { 
             Common: 0.20, 
             Rare: 0.15, 
@@ -670,7 +670,7 @@ function loadGame() {
     const savedState = localStorage.getItem("cubeHavenSave");
     if (savedState) {
         const gameState = JSON.parse(savedState);
-        coins = gameState.coins || 5000;
+        coins = gameState.coins || 1000; // Default to 1,000 if no save exists
         cubes = gameState.cubes || 0;
         cubesArray = gameState.cubesArray.map(cube => ({
             rarity: cube.rarity,
@@ -700,7 +700,7 @@ function restartGame() {
     if (!confirm("Are you sure you want to restart? All progress will be lost.")) {
         return;
     }
-    coins = 5000;
+    coins = 1000; // Reset to 1,000 coins
     cubes = 0;
     cubesArray = [];
     framedCubes = Array(10).fill(null);
@@ -1023,3 +1023,63 @@ updateGameState();
 setInterval(() => {
     saveGame(false); // Auto-save without notification
 }, 180000); // 3 minutes = 180,000 milliseconds
+
+// Starry Background Animation
+class Star {
+    constructor(x, y, radius, brightness) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.brightness = brightness;
+        this.twinkleSpeed = Math.random() * 0.05 + 0.02;
+        this.twinkleTimer = Math.random() * Math.PI * 2;
+    }
+
+    update() {
+        this.twinkleTimer += this.twinkleSpeed;
+        this.brightness = 0.5 + Math.sin(this.twinkleTimer) * 0.5;
+    }
+
+    draw(ctx) {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.brightness})`;
+        ctx.fill();
+    }
+}
+
+const starryCanvas = document.getElementById("starry-background");
+const starryCtx = starryCanvas.getContext("2d");
+const stars = [];
+
+function resizeStarryCanvas() {
+    starryCanvas.width = window.innerWidth;
+    starryCanvas.height = window.innerHeight;
+}
+
+function initStars() {
+    resizeStarryCanvas();
+    stars.length = 0;
+    const numStars = Math.floor((window.innerWidth * window.innerHeight) / 5000);
+    for (let i = 0; i < numStars; i++) {
+        stars.push(new Star(
+            Math.random() * window.innerWidth,
+            Math.random() * window.innerHeight,
+            Math.random() * 2 + 1,
+            Math.random()
+        ));
+    }
+}
+
+function animateStars() {
+    starryCtx.clearRect(0, 0, starryCanvas.width, starryCanvas.height);
+    stars.forEach(star => {
+        star.update();
+        star.draw(starryCtx);
+    });
+    requestAnimationFrame(animateStars);
+}
+
+window.addEventListener("resize", initStars);
+initStars();
+animateStars();
