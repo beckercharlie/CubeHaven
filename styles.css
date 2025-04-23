@@ -1,0 +1,254 @@
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #87CEEB;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.game-container {
+    text-align: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stats {
+    margin-bottom: 20px;
+}
+
+.stats h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #4B0082;
+}
+
+.stats p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.stats button,
+.egg-shop button,
+.cube-info button,
+.hatch-notification button,
+.game-notification button {
+    padding: 8px 16px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.stats button {
+    background-color: #FFD700;
+    color: #333;
+}
+
+.stats button:hover {
+    background-color: #FFC107;
+}
+
+.fenced-area {
+    width: 400px;
+    height: 400px;
+    background-color: #90EE90;
+    border: 5px solid #8B4513;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+}
+
+#cube-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.egg-shop {
+    margin-top: 20px;
+}
+
+.egg-shop h3 {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+    color: #4B0082;
+}
+
+.egg-shop button {
+    background-color: #D3D3D3;
+    color: #333;
+}
+
+.egg-shop button:nth-child(2) {
+    background-color: #C0C0C0;
+}
+
+.egg-shop button:nth-child(3) {
+    background-color: #FFD700;
+}
+
+.egg-shop button:nth-child(4) {
+    background-color: #00CED1;
+}
+
+.egg-shop button:nth-child(5) {
+    background-color: #FF4500;
+}
+
+.egg-shop button:nth-child(6) {
+    background-color: #FF00FF;
+}
+
+.egg-shop button:hover {
+    opacity: 0.9;
+}
+
+.cube-info,
+.hatch-notification,
+.game-notification {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #FFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    display: none;
+    text-align: center;
+}
+
+.cube-info h3,
+.hatch-notification h3,
+.game-notification h3 {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+    color: #4B0082;
+}
+
+.cube-info p,
+.hatch-notification p,
+.game-notification p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.cube-info button,
+.hatch-notification button,
+.game-notification button {
+    display: block; /* Ensure each button takes its own line */
+    margin: 5px auto; /* Center the button horizontally with auto margins */
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    background-color: #FFD700;
+    color: #333;
+    transition: background-color 0.3s;
+}
+
+.cube-info button:hover,
+.hatch-notification button:hover,
+.game-notification button:hover {
+    background-color: #FFC107;
+}
+
+.settings {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 10; /* Ensure settings are above frames */
+}
+
+.settings-toggle {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #FFD700;
+    color: #333;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.settings-toggle:hover {
+    background-color: #FFC107;
+}
+
+.settings-dropdown {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 40px;
+    left: 0;
+    background-color: #FFF;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 10; /* Ensure dropdown is above frames */
+}
+
+.settings-dropdown button {
+    padding: 8px 16px;
+    margin: 5px 0;
+    border: none;
+    border-radius: 5px;
+    background-color: #FFD700;
+    color: #333;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.settings-dropdown button:hover {
+    background-color: #FFC107;
+}
+
+/* Frame Styles */
+.frame-column {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 1; /* Frames are below settings */
+}
+
+.left-frames {
+    left: 20px;
+}
+
+.right-frames {
+    right: 20px;
+}
+
+.frame {
+    width: 50px;
+    height: 50px;
+    background-color: #FFF;
+    border: 2px solid #FFD700;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.frame canvas {
+    width: 40px;
+    height: 40px;
+}

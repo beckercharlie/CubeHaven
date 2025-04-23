@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cube Haven</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <div class="settings">
+            <button id="settings-toggle">Settings</button>
+            <div id="settings-dropdown" class="settings-dropdown">
+                <button id="save-game">Save Game</button>
+                <button id="restart-game">Restart Game</button>
+            </div>
+        </div>
+        <div class="stats">
+            <h2>Cube Haven</h2>
+            <p id="coin-counter">Coins: 1000</p>
+            <p id="cube-counter">Cubes: 0</p>
+            <button id="sell-cubes">Sell Cubes (1 cube = 10 coins)</button>
+        </div>
+        <!-- Left Frames -->
+        <div class="frame-column left-frames">
+            <div class="frame" data-frame-id="0"><canvas id="frame-0-canvas" width="40" height="40"></canvas></div>
+            <div class="frame" data-frame-id="1"><canvas id="frame-1-canvas" width="40" height="40"></canvas></div>
+            <div class="frame" data-frame-id="2"><canvas id="frame-2-canvas" width="40" height="40"></canvas></div>
+            <div class="frame" data-frame-id="3"><canvas id="frame-3-canvas" width="40" height="40"></canvas></div>
+            <div class="frame" data-frame-id="4"><canvas id="frame-4-canvas" width="40" height="40"></canvas></div>
+        </div>
+        <div class="fenced-area">
+            <canvas id="cube-canvas" width="400" height="400"></canvas>
+        </div>
+        <!-- Right Frames -->
+        <div class="frame-column right-frames">
+            <div class="frame" data-frame-id="5"><canvas id="frame-5-canvas" width="40" height="40"></canvas></div>
+            <div class="frame" data-frame-id="6"><canvas id="frame-6-canvas" width="40" height="40"></canvas></div>
+            <div class="frame" data-frame-id="7"><canvas id="frame-7-canvas" width="40" height="40"></canvas></div>
+            <div class="frame" data-frame-id="8"><canvas id="frame-8-canvas" width="40" height="40"></canvas></div>
+            <div class="frame" data-frame-id="9"><canvas id="frame-9-canvas" width="40" height="40"></canvas></div>
+        </div>
+        <div class="egg-shop">
+            <h3>Egg Shop</h3>
+            <button class="egg-button" data-tier="1">Basic Egg (100 coins)</button>
+            <button class="egg-button" data-tier="2">Silver Egg (1,000 coins)</button>
+            <button class="egg-button" data-tier="3">Gold Egg (10,000 coins)</button>
+            <button class="egg-button" data-tier="4">Diamond Egg (100,000 coins)</button>
+            <button class="egg-button" data-tier="5">Mythic Egg (1,000,000 coins)</button>
+        </div>
+        <div id="cube-info" class="cube-info">
+            <h3>Cube Info</h3>
+            <canvas id="cube-image" width="40" height="40" style="margin: 0 auto; display: block;"></canvas>
+            <p id="cube-rarity"></p>
+            <p id="cube-odds"></p>
+            <p id="cube-rate"></p>
+            <p id="cube-sell-value"></p>
+            <button id="sell-cube">Sell Cube</button>
+            <button id="frame-cube">Frame Cube</button>
+            <button id="remove-from-frame" style="display: none;">Remove from Frame</button>
+            <button id="close-info">Close Info</button>
+        </div>
+        <div id="hatch-notification" class="hatch-notification">
+            <h3>You Got a New Cube!</h3>
+            <canvas id="hatch-cube-image" width="40" height="40" style="margin: 0 auto; display: block;"></canvas>
+            <p id="hatch-cube-rarity"></p>
+            <p id="hatch-cube-odds"></p>
+            <p id="hatch-cube-rate"></p>
+            <p id="hatch-cube-sell-value"></p>
+            <button id="close-hatch">Close</button>
+        </div>
+        <div id="game-notification" class="game-notification">
+            <h3 id="game-notification-title">Notification</h3>
+            <p id="game-notification-message"></p>
+            <button id="close-game-notification">Close</button>
+        </div>
+    </div>
+    <!-- Placeholder Cube Images (Will be generated dynamically) -->
+    <canvas id="cube-common" width="40" height="40" style="display: none;"></canvas>
+    <canvas id="cube-rare" width="40" height="40" style="display: none;"></canvas>
+    <canvas id="cube-epic" width="40" height="40" style="display: none;"></canvas>
+    <canvas id="cube-legendary" width="40" height="40" style="display: none;"></canvas>
+    <canvas id="cube-mythic" width="40" height="40" style="display: none;"></canvas>
+    <canvas id="cube-galactic" width="40" height="40" style="display: none;"></canvas>
+    <canvas id="cube-celestial" width="40" height="40" style="display: none;"></canvas>
+    <canvas id="cube-astronomic" width="40" height="40" style="display: none;"></canvas>
+    <canvas id="cube-insane" width="40" height="40" style="display: none;"></canvas>
+    <canvas id="cube-unfathomable" width="40" height="40" style="display: none;"></canvas>
+    <canvas id="cube-ethereal" width="40" height="40" style="display: none;"></canvas>
+    <canvas id="cube-cosmic" width="40" height="40" style="display: none;"></canvas>
+    <canvas id="cube-nebulaic" width="40" height="40" style="display: none;"></canvas>
+    <canvas id="cube-stellar" width="40" height="40" style="display: none;"></canvas>
+    <canvas id="cube-supernova" width="40" height="40" style="display: none;"></canvas>
+    <canvas id="cube-quasar" width="40" height="40" style="display: none;"></canvas>
+    <canvas id="cube-voidic" width="40" height="40" style="display: none;"></canvas>
+    <canvas id="cube-galacticcore" width="40" height="40" style="display: none;"></canvas>
+    <canvas id="cube-infinity" width="40" height="40" style="display: none;"></canvas>
+    <canvas id="cube-primordial" width="40" height="40" style="display: none;"></canvas>
+    <script src="script.js"></script>
+</body>
+</html>
