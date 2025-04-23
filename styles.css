@@ -1,9 +1,8 @@
 body {
     margin: 0;
-    padding: 0;
     font-family: 'Montserrat', sans-serif;
-    background-color: #1A1A40; /* Deep navy blue for cosmic theme */
-    color: #FFFFFF; /* White text for contrast */
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #e0e0e0;
     overflow-x: hidden;
     position: relative;
 }
@@ -12,36 +11,49 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: -1; /* Behind all content */
-    width: 100%;
-    height: 100%;
+    z-index: -1;
 }
 
 .container {
-    max-width: 1200px;
-    margin: 20px auto;
+    max-width: 800px;
+    margin: 0 auto;
     padding: 20px;
     text-align: center;
-    position: relative;
-    z-index: 1; /* Above starry background */
 }
 
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px 20px;
+    border-radius: 10px;
     margin-bottom: 20px;
-    background: linear-gradient(145deg, #2E2E5A, #1A1A40);
-    padding: 15px 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
 }
 
-.header div {
+#coin-counter, #cube-counter {
     font-family: 'Orbitron', sans-serif;
     font-size: 1.2em;
-    color: #FFD700; /* Gold for stats */
-    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+    color: #00ffff;
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+}
+
+#sell-cubes {
+    background: linear-gradient(45deg, #ff00ff, #00ffff);
+    border: none;
+    padding: 10px 20px;
+    font-family: 'Orbitron', sans-serif;
+    color: #1a1a2e;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.3s ease;
+}
+
+#sell-cubes:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
 }
 
 .settings {
@@ -49,118 +61,50 @@ body {
 }
 
 #settings-toggle {
-    background-color: #A78BFA; /* Soft purple */
-    color: #1A1A40;
+    background: linear-gradient(45deg, #ff00ff, #00ffff);
     border: none;
     padding: 10px 20px;
-    border-radius: 10px;
     font-family: 'Orbitron', sans-serif;
-    font-size: 1em;
+    color: #1a1a2e;
+    font-weight: bold;
+    border-radius: 5px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
+    transition: transform 0.1s ease, box-shadow 0.3s ease;
 }
 
 #settings-toggle:hover {
-    background-color: #8B5CF6;
-    box-shadow: 0 0 15px rgba(167, 139, 250, 0.8);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
 }
 
 .dropdown {
     display: none;
-    flex-direction: column;
     position: absolute;
-    top: 50px;
+    top: 100%;
     right: 0;
-    background: #2E2E5A;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    flex-direction: column;
     z-index: 10;
 }
 
 .dropdown button {
-    background-color: #A78BFA;
-    color: #1A1A40;
+    background: transparent;
     border: none;
-    padding: 8px 15px;
-    margin: 5px 0;
-    border-radius: 8px;
+    padding: 10px 20px;
+    color: #e0e0e0;
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.9em;
+    text-align: center;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background 0.3s ease;
 }
 
 .dropdown button:hover {
-    background-color: #8B5CF6;
-}
-
-#sell-cubes {
-    background-color: #FFD700; /* Gold */
-    color: #1A1A40;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-}
-
-#sell-cubes:hover {
-    background-color: #F59E0B;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+    background: rgba(0, 255, 255, 0.2);
 }
 
 .egg-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-}
-
-.egg-button {
-    background: linear-gradient(145deg, #A78BFA, #6D28D9); /* Purple gradient */
-    color: #FFFFFF;
-    border: none;
-    padding: 15px 25px;
-    border-radius: 12px;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
-}
-
-.egg-button:hover {
-    background: linear-gradient(145deg, #8B5CF6, #5B21B6);
-    box-shadow: 0 0 15px rgba(167, 139, 250, 0.8);
-    transform: scale(1.05);
-}
-
-.fence {
-    background: radial-gradient(circle, #2E2E5A, #1A1A40);
-    border: 3px solid #A78BFA;
-    border-radius: 20px;
-    width: 400px;
-    height: 400px;
-    margin: 0 auto 20px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 0 20px rgba(167, 139, 250, 0.3);
-    animation: shimmer 3s infinite;
-}
-
-@keyframes shimmer {
-    0% { box-shadow: 0 0 20px rgba(167, 139, 250, 0.3); }
-    50% { box-shadow: 0 0 30px rgba(167, 139, 250, 0.5); }
-    100% { box-shadow: 0 0 20px rgba(167, 139, 250, 0.3); }
-}
-
-.frames {
     display: flex;
     justify-content: center;
     gap: 10px;
@@ -168,85 +112,133 @@ body {
     margin-bottom: 20px;
 }
 
+.egg-button {
+    background: linear-gradient(45deg, #ff00ff, #00ffff);
+    border: none;
+    padding: 10px 20px;
+    font-family: 'Orbitron', sans-serif;
+    color: #1a1a2e;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.3s ease;
+}
+
+.egg-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+.fence {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    overflow: hidden;
+}
+
+#cube-canvas {
+    display: block;
+    margin: 0 auto;
+}
+
+.frames {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
 .frame {
-    width: 50px;
-    height: 50px;
-    background: #2E2E5A;
-    border: 2px solid #FFD700;
-    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
-    transition: transform 0.3s ease;
+    cursor: pointer;
+    transition: transform 0.1s ease;
 }
 
 .frame:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-}
-
-.frame canvas {
-    width: 40px;
-    height: 40px;
 }
 
 .cosmic-panel {
+    display: none;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: linear-gradient(145deg, #2E2E5A, #1A1A40);
+    background: rgba(26, 26, 46, 0.9);
     padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 0 20px rgba(167, 139, 250, 0.5);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
     text-align: center;
-    z-index: 100;
-    display: none;
+    z-index: 20;
     max-width: 300px;
     width: 90%;
 }
 
 .cosmic-panel h3 {
     font-family: 'Orbitron', sans-serif;
-    color: #FFD700;
-    margin-bottom: 15px;
-    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+    color: #00ffff;
+    margin-bottom: 10px;
 }
 
 .cosmic-panel p {
     margin: 5px 0;
-    font-size: 0.9em;
-}
-
-.cosmic-panel canvas {
-    margin: 10px auto;
+    color: #e0e0e0;
 }
 
 .cosmic-panel button {
-    background-color: #A78BFA;
-    color: #1A1A40;
+    background: linear-gradient(45deg, #ff00ff, #00ffff);
     border: none;
     padding: 10px 20px;
     margin: 5px;
-    border-radius: 10px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.9em;
+    font-family: 'Orbitron', sans-serif;
+    color: #1a1a2e;
+    font-weight: bold;
+    border-radius: 5px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
+    transition: transform 0.1s ease, box-shadow 0.3s ease;
+    display: inline-block; /* Ensure buttons can be centered */
 }
 
 .cosmic-panel button:hover {
-    background-color: #8B5CF6;
-    box-shadow: 0 0 15px rgba(167, 139, 250, 0.8);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
 }
 
+/* Center the buttons in the cosmic-panel */
+.cosmic-panel .button-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Specific styling for Sell Cube button to ensure visibility */
 #sell-cube {
-    background-color: #FFD700; /* Gold for sell button */
-    color: #1A1A40;
+    background: linear-gradient(45deg, #ffd700, #ff8c00); /* Gold to orange gradient for Sell Cube */
+    color: #1a1a2e;
 }
 
-#sell-cube:hover {
-    background-color: #F59E0B;
+/* Specific styling for Frame Cube button */
+#frame-cube {
+    background: linear-gradient(45deg, #ff00ff, #00ffff); /* Keep the cosmic gradient */
+    color: #1a1a2e;
+}
+
+/* Specific styling for Close Info button */
+#close-info {
+    background: linear-gradient(45deg, #ff4040, #ff8080); /* Red gradient for Close Info */
+    color: #1a1a2e;
 }
