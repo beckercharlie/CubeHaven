@@ -1,254 +1,252 @@
 body {
     margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background-color: #87CEEB;
-    color: #333;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
-}
-
-.game-container {
-    text-align: center;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #1A1A40; /* Deep navy blue for cosmic theme */
+    color: #FFFFFF; /* White text for contrast */
+    overflow-x: hidden;
     position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
-.stats {
-    margin-bottom: 20px;
-}
-
-.stats h2 {
-    margin: 0;
-    font-size: 24px;
-    color: #4B0082;
-}
-
-.stats p {
-    margin: 5px 0;
-    font-size: 16px;
-}
-
-.stats button,
-.egg-shop button,
-.cube-info button,
-.hatch-notification button,
-.game-notification button {
-    padding: 8px 16px;
-    margin: 5px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    transition: background-color 0.3s;
-}
-
-.stats button {
-    background-color: #FFD700;
-    color: #333;
-}
-
-.stats button:hover {
-    background-color: #FFC107;
-}
-
-.fenced-area {
-    width: 400px;
-    height: 400px;
-    background-color: #90EE90;
-    border: 5px solid #8B4513;
-    border-radius: 50%;
-    position: relative;
-    overflow: hidden;
-}
-
-#cube-canvas {
-    position: absolute;
+#starry-background {
+    position: fixed;
     top: 0;
     left: 0;
+    z-index: -1; /* Behind all content */
+    width: 100%;
+    height: 100%;
 }
 
-.egg-shop {
-    margin-top: 20px;
-}
-
-.egg-shop h3 {
-    margin: 0 0 10px 0;
-    font-size: 20px;
-    color: #4B0082;
-}
-
-.egg-shop button {
-    background-color: #D3D3D3;
-    color: #333;
-}
-
-.egg-shop button:nth-child(2) {
-    background-color: #C0C0C0;
-}
-
-.egg-shop button:nth-child(3) {
-    background-color: #FFD700;
-}
-
-.egg-shop button:nth-child(4) {
-    background-color: #00CED1;
-}
-
-.egg-shop button:nth-child(5) {
-    background-color: #FF4500;
-}
-
-.egg-shop button:nth-child(6) {
-    background-color: #FF00FF;
-}
-
-.egg-shop button:hover {
-    opacity: 0.9;
-}
-
-.cube-info,
-.hatch-notification,
-.game-notification {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #FFF;
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    display: none;
     text-align: center;
+    position: relative;
+    z-index: 1; /* Above starry background */
 }
 
-.cube-info h3,
-.hatch-notification h3,
-.game-notification h3 {
-    margin: 0 0 10px 0;
-    font-size: 20px;
-    color: #4B0082;
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    background: linear-gradient(145deg, #2E2E5A, #1A1A40);
+    padding: 15px 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-.cube-info p,
-.hatch-notification p,
-.game-notification p {
-    margin: 5px 0;
-    font-size: 14px;
-}
-
-.cube-info button,
-.hatch-notification button,
-.game-notification button {
-    display: block; /* Ensure each button takes its own line */
-    margin: 5px auto; /* Center the button horizontally with auto margins */
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    background-color: #FFD700;
-    color: #333;
-    transition: background-color 0.3s;
-}
-
-.cube-info button:hover,
-.hatch-notification button:hover,
-.game-notification button:hover {
-    background-color: #FFC107;
+.header div {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2em;
+    color: #FFD700; /* Gold for stats */
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
 }
 
 .settings {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    z-index: 10; /* Ensure settings are above frames */
+    position: relative;
 }
 
-.settings-toggle {
-    padding: 8px 16px;
+#settings-toggle {
+    background-color: #A78BFA; /* Soft purple */
+    color: #1A1A40;
     border: none;
-    border-radius: 5px;
-    background-color: #FFD700;
-    color: #333;
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1em;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
 }
 
-.settings-toggle:hover {
-    background-color: #FFC107;
+#settings-toggle:hover {
+    background-color: #8B5CF6;
+    box-shadow: 0 0 15px rgba(167, 139, 250, 0.8);
 }
 
-.settings-dropdown {
+.dropdown {
     display: none;
     flex-direction: column;
     position: absolute;
-    top: 40px;
-    left: 0;
-    background-color: #FFF;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    top: 50px;
+    right: 0;
+    background: #2E2E5A;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     padding: 10px;
-    z-index: 10; /* Ensure dropdown is above frames */
+    z-index: 10;
 }
 
-.settings-dropdown button {
-    padding: 8px 16px;
-    margin: 5px 0;
+.dropdown button {
+    background-color: #A78BFA;
+    color: #1A1A40;
     border: none;
-    border-radius: 5px;
-    background-color: #FFD700;
-    color: #333;
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
+    padding: 8px 15px;
+    margin: 5px 0;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9em;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
 }
 
-.settings-dropdown button:hover {
-    background-color: #FFC107;
+.dropdown button:hover {
+    background-color: #8B5CF6;
 }
 
-/* Frame Styles */
-.frame-column {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+#sell-cubes {
+    background-color: #FFD700; /* Gold */
+    color: #1A1A40;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+#sell-cubes:hover {
+    background-color: #F59E0B;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+}
+
+.egg-buttons {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
-    z-index: 1; /* Frames are below settings */
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
-.left-frames {
-    left: 20px;
+.egg-button {
+    background: linear-gradient(145deg, #A78BFA, #6D28D9); /* Purple gradient */
+    color: #FFFFFF;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 12px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
 }
 
-.right-frames {
-    right: 20px;
+.egg-button:hover {
+    background: linear-gradient(145deg, #8B5CF6, #5B21B6);
+    box-shadow: 0 0 15px rgba(167, 139, 250, 0.8);
+    transform: scale(1.05);
+}
+
+.fence {
+    background: radial-gradient(circle, #2E2E5A, #1A1A40);
+    border: 3px solid #A78BFA;
+    border-radius: 20px;
+    width: 400px;
+    height: 400px;
+    margin: 0 auto 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(167, 139, 250, 0.3);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% { box-shadow: 0 0 20px rgba(167, 139, 250, 0.3); }
+    50% { box-shadow: 0 0 30px rgba(167, 139, 250, 0.5); }
+    100% { box-shadow: 0 0 20px rgba(167, 139, 250, 0.3); }
+}
+
+.frames {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
 }
 
 .frame {
     width: 50px;
     height: 50px;
-    background-color: #FFF;
+    background: #2E2E5A;
     border: 2px solid #FFD700;
-    border-radius: 5px;
+    border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.frame:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
 .frame canvas {
     width: 40px;
     height: 40px;
+}
+
+.cosmic-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(145deg, #2E2E5A, #1A1A40);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(167, 139, 250, 0.5);
+    text-align: center;
+    z-index: 100;
+    display: none;
+    max-width: 300px;
+    width: 90%;
+}
+
+.cosmic-panel h3 {
+    font-family: 'Orbitron', sans-serif;
+    color: #FFD700;
+    margin-bottom: 15px;
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+}
+
+.cosmic-panel p {
+    margin: 5px 0;
+    font-size: 0.9em;
+}
+
+.cosmic-panel canvas {
+    margin: 10px auto;
+}
+
+.cosmic-panel button {
+    background-color: #A78BFA;
+    color: #1A1A40;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
+}
+
+.cosmic-panel button:hover {
+    background-color: #8B5CF6;
+    box-shadow: 0 0 15px rgba(167, 139, 250, 0.8);
+}
+
+#sell-cube {
+    background-color: #FFD700; /* Gold for sell button */
+    color: #1A1A40;
+}
+
+#sell-cube:hover {
+    background-color: #F59E0B;
 }
