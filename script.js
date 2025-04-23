@@ -1,5 +1,5 @@
 // Game State
-let coins = 1000;
+let coins = 5000;
 let cubes = 0;
 let cubesArray = [];
 let framedCubes = Array(10).fill(null);
@@ -10,7 +10,7 @@ let selectedCubeSource = null;
 const eggTiers = [
     { 
         name: "Basic", 
-        cost: 100, 
+        cost: 10, 
         odds: { 
             Common: 0.95, 
             Rare: 0.03, 
@@ -36,7 +36,7 @@ const eggTiers = [
     },
     { 
         name: "Silver", 
-        cost: 1000, 
+        cost: 100, 
         odds: { 
             Common: 0.80, 
             Rare: 0.10, 
@@ -62,7 +62,7 @@ const eggTiers = [
     },
     { 
         name: "Gold", 
-        cost: 10000, 
+        cost: 1000, 
         odds: { 
             Common: 0.60, 
             Rare: 0.20, 
@@ -88,7 +88,7 @@ const eggTiers = [
     },
     { 
         name: "Diamond", 
-        cost: 100000, 
+        cost: 10000, 
         odds: { 
             Common: 0.40, 
             Rare: 0.25, 
@@ -114,7 +114,7 @@ const eggTiers = [
     },
     { 
         name: "Mythic", 
-        cost: 1000000, 
+        cost: 100000, 
         odds: { 
             Common: 0.20, 
             Rare: 0.15, 
@@ -296,7 +296,7 @@ function initializeCubeImages() {
             ctx.lineWidth = 1;
             for (let i = 0; i < 3; i++) {
                 const radius = 10 + i * 3;
-                const swirl = (cube.animationApiKey + i) % (Math.PI * 2);
+                const swirl = (cube.animationTimer + i) % (Math.PI * 2);
                 ctx.beginPath();
                 ctx.arc(20, 20, radius, swirl, swirl + Math.PI * 1.5);
                 ctx.stroke();
@@ -642,7 +642,7 @@ function showGameNotification(title, message) {
 }
 
 // Save Game Function
-function saveGame() {
+function saveGame(showNotification = true) {
     const gameState = {
         coins: coins,
         cubes: cubes,
@@ -659,8 +659,10 @@ function saveGame() {
     };
     localStorage.setItem("cubeHavenSave", JSON.stringify(gameState));
     console.log("Game saved:", gameState);
-    showGameNotification("Success", "Game Saved!");
-    toggleSettingsDropdown();
+    if (showNotification) {
+        showGameNotification("Success", "Game Saved!");
+        toggleSettingsDropdown();
+    }
 }
 
 // Load Game Function
@@ -875,7 +877,7 @@ elements.settingsToggle.addEventListener("click", () => {
 
 // Save Game Button
 elements.saveGame.addEventListener("click", () => {
-    saveGame();
+    saveGame(true); // Show notification for manual save
 });
 
 // Restart Game Button
@@ -1016,3 +1018,8 @@ gameLoop();
 
 // Initialize
 updateGameState();
+
+// Auto-Save Every 3 Minutes
+setInterval(() => {
+    saveGame(false); // Auto-save without notification
+}, 180000); // 3 minutes = 180,000 milliseconds
