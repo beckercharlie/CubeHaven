@@ -19,9 +19,11 @@
             </div>
             <!-- Cube Index Dropdown -->
             <div id="cube-index-dropdown" class="cube-index-dropdown">
-                <h3>Cube Index</h3>
+                <div class="cube-index-header">
+                    <h3>Cube Index</h3>
+                    <button id="close-cube-index">Close</button>
+                </div>
                 <div id="cube-grid" class="cube-grid"></div>
-                <button id="close-cube-index">Close</button>
             </div>
         </div>
         <!-- Buy Me a Coffee Button -->
@@ -37,9 +39,11 @@
         </div>
         <div class="stats">
             <h2>Cube Haven</h2>
-            <p id="coin-counter">Coins: 1000</p>
-            <p id="cube-counter">Cubes: 0</p>
-            <button id="sell-cubes">Sell Cubes (1 cube = 10 coins)</button>
+            <div class="stats-row">
+                <p id="coin-counter">Coins: 1000</p>
+                <p id="cube-counter">Cubes: 0</p>
+                <button id="sell-cubes">Sell Cubes (1 cube = 10 coins)</button>
+            </div>
         </div>
         <!-- Left Frames -->
         <div class="frame-column left-frames">
@@ -69,9 +73,11 @@
                 <button class="egg-button" data-tier="4">Diamond Egg (100,000 coins)</button>
                 <button class="egg-button" data-tier="5">Mythic Egg (1,000,000 coins)</button>
             </div>
-            <button id="luck-potion-1" class="luck-potion luck-potion-1">Luck Potion T1 (5,000 coins)</button>
-            <button id="luck-potion-2" class="luck-potion luck-potion-2">Luck Potion T2 (25,000 coins)</button>
-            <button id="luck-potion-3" class="luck-potion luck-potion-3">Luck Potion T3 (100,000 coins)</button>
+            <div class="luck-potion-buttons">
+                <button id="luck-potion-1" class="luck-potion luck-potion-1">Luck Potion T1 (5,000 coins)</button>
+                <button id="luck-potion-2" class="luck-potion luck-potion-2">Luck Potion T2 (25,000 coins)</button>
+                <button id="luck-potion-3" class="luck-potion luck-potion-3">Luck Potion T3 (100,000 coins)</button>
+            </div>
         </div>
         <div id="cube-info" class="cube-info">
             <h3>Cube Info</h3>
