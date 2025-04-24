@@ -1,244 +1,391 @@
 body {
     margin: 0;
-    font-family: 'Montserrat', sans-serif;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    color: #e0e0e0;
-    overflow-x: hidden;
-    position: relative;
-}
-
-#starry-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: -1;
-}
-
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    text-align: center;
-}
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 10px 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
-}
-
-#coin-counter, #cube-counter {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.2em;
-    color: #00ffff;
-    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
-}
-
-#sell-cubes {
-    background: linear-gradient(45deg, #ff00ff, #00ffff);
-    border: none;
-    padding: 10px 20px;
-    font-family: 'Orbitron', sans-serif;
-    color: #1a1a2e;
-    font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: transform 0.1s ease, box-shadow 0.3s ease;
-}
-
-#sell-cubes:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
-}
-
-.settings {
-    position: relative;
-}
-
-#settings-toggle {
-    background: linear-gradient(45deg, #ff00ff, #00ffff);
-    border: none;
-    padding: 10px 20px;
-    font-family: 'Orbitron', sans-serif;
-    color: #1a1a2e;
-    font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: transform 0.1s ease, box-shadow 0.3s ease;
-}
-
-#settings-toggle:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
-}
-
-.dropdown {
-    display: none;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
-    flex-direction: column;
-    z-index: 10;
-}
-
-.dropdown button {
-    background: transparent;
-    border: none;
-    padding: 10px 20px;
-    color: #e0e0e0;
-    font-family: 'Montserrat', sans-serif;
-    text-align: center;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.dropdown button:hover {
-    background: rgba(0, 255, 255, 0.2);
-}
-
-.egg-buttons {
+    font-family: 'Poppins', sans-serif;
+    background-color: #87CEEB;
+    color: #333;
     display: flex;
     justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.game-container {
+    text-align: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stats {
     margin-bottom: 20px;
 }
 
-.egg-button {
-    background: linear-gradient(45deg, #ff00ff, #00ffff);
+.stats h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #4B0082;
+}
+
+.stats p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.stats button,
+.egg-shop button,
+.cube-info button,
+.hatch-notification button,
+.game-notification button {
+    padding: 8px 16px;
+    margin: 5px;
     border: none;
-    padding: 10px 20px;
-    font-family: 'Orbitron', sans-serif;
-    color: #1a1a2e;
-    font-weight: bold;
     border-radius: 5px;
     cursor: pointer;
-    transition: transform 0.1s ease, box-shadow 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    transition: background-color 0.3s, transform 0.2s, opacity 0.2s;
 }
 
-.egg-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+.stats button {
+    background-color: #FFD700;
+    color: #333;
 }
 
-.fence {
-    position: relative;
+.stats button:hover {
+    background-color: #FFC107;
+}
+
+.fenced-area {
     width: 400px;
     height: 400px;
-    margin: 0 auto;
-    background: rgba(255, 255, 255, 0.05);
+    background-color: #90EE90;
+    border: 5px solid #8B4513;
     border-radius: 50%;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    position: relative;
     overflow: hidden;
 }
 
 #cube-canvas {
-    display: block;
-    margin: 0 auto;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
-.frames {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
+.egg-shop {
     margin-top: 20px;
+    width: 300px; /* Fixed width to control the grid */
+}
+
+.egg-shop h3 {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+    color: #4B0082;
+}
+
+/* Grid layout for egg buttons */
+.egg-shop-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 buttons in the first row */
+    gap: 8px; /* Reduced gap for a tighter layout */
+    justify-items: center;
+}
+
+/* Adjust the last two buttons to be centered in the second row */
+.egg-shop button:nth-child(4),
+.egg-shop button:nth-child(5) {
+    grid-column: span 1;
+}
+
+/* Specific positioning for the last two buttons to center them */
+.egg-shop button:nth-child(4) {
+    grid-column: 1 / 2;
+    grid-row: 2;
+}
+
+.egg-shop button:nth-child(5) {
+    grid-column: 2 / 3;
+    grid-row: 2;
+}
+
+/* Style for egg buttons */
+.egg-shop button {
+    padding: 6px 12px; /* Smaller padding for a more compact button */
+    font-size: 12px; /* Smaller font size */
+    border-radius: 8px; /* Slightly more rounded corners for a softer look */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: transform 0.2s, opacity 0.2s;
+    color: #FFF; /* White text for better contrast on vibrant colors */
+}
+
+/* Unique colors for each egg button */
+.egg-shop button[data-tier="1"] { /* Basic Egg */
+    background-color: #A9A9A9; /* Light gray, simple and unassuming */
+}
+
+.egg-shop button[data-tier="2"] { /* Silver Egg */
+    background-color: #C0C0C0; /* Silver */
+}
+
+.egg-shop button[data-tier="3"] { /* Gold Egg */
+    background-color: #FFD700; /* Gold */
+}
+
+.egg-shop button[data-tier="4"] { /* Diamond Egg */
+    background-color: #00CED1; /* Cyan, reminiscent of a diamond's sparkle */
+}
+
+.egg-shop button[data-tier="5"] { /* Mythic Egg */
+    background-color: #FF00FF; /* Magenta, vibrant and mystical */
+}
+
+/* Hover effect for egg buttons */
+.egg-shop button:hover {
+    transform: scale(1.05); /* Slight scale-up on hover */
+    opacity: 0.95; /* Subtle fade to indicate interaction */
+}
+
+/* Pulse animation for egg buttons on click */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.egg-shop button.pulse {
+    animation: pulse 0.3s ease-in-out;
+}
+
+/* Base style for luck potion buttons */
+.luck-potion {
+    margin-top: 10px;
+    padding: 8px 16px;
+    color: #FFF;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, opacity 0.2s;
+    font-size: 12px;
+}
+
+.luck-potion:hover {
+    transform: scale(1.05);
+    opacity: 0.95;
+}
+
+/* Tier-specific colors for luck potions */
+.luck-potion-1 {
+    background-color: #32CD32; /* Lime green for Tier 1 */
+}
+
+.luck-potion-2 {
+    background-color: #FF69B4; /* Hot pink for Tier 2 */
+}
+
+.luck-potion-3 {
+    background-color: #FFD700; /* Gold for Tier 3 */
+}
+
+.cube-info,
+.hatch-notification,
+.game-notification {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #FFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    display: none;
+    text-align: center;
+}
+
+.cube-info h3,
+.hatch-notification h3,
+.game-notification h3 {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+    color: #4B0082;
+}
+
+.cube-info p,
+.hatch-notification p,
+.game-notification p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.cube-info button,
+.hatch-notification button,
+.game-notification button {
+    background-color: #BA55D3;
+    color: #FFF;
+}
+
+.cube-info button:hover,
+.hatch-notification button:hover,
+.game-notification button:hover {
+    background-color: #9932CC;
+}
+
+.settings {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.settings-toggle,
+.settings-dropdown button,
+#close-cube-index {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+#settings-toggle {
+    background-color: #4682B4;
+    color: #FFF;
+}
+
+#settings-toggle:hover {
+    background-color: #4169E1;
+}
+
+.settings-dropdown {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 40px;
+    left: 0;
+    background-color: #FFF;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    z-index: 10;
+}
+
+.settings-dropdown button {
+    background-color: #87CEEB;
+    color: #333;
+    margin: 5px;
+}
+
+.settings-dropdown button:hover {
+    background-color: #00BFFF;
+}
+
+#cube-index-dropdown {
+    display: none;
+    position: absolute;
+    top: 40px;
+    left: 0;
+    background-color: #FFF;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    z-index: 10;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+#cube-index-dropdown h3 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    color: #4B0082;
+}
+
+#cube-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.cube-grid-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cube-grid-item canvas {
+    margin-bottom: 5px;
+}
+
+.cube-grid-item p {
+    margin: 0;
+    font-size: 12px;
+}
+
+#close-cube-index {
+    margin-top: 10px;
+    background-color: #BA55D3;
+    color: #FFF;
+}
+
+#close-cube-index:hover {
+    background-color: #9932CC;
+}
+
+.frame-column {
+    position: absolute;
+    top: 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.left-frames {
+    left: 50px;
+}
+
+.right-frames {
+    right: 50px;
 }
 
 .frame {
     width: 40px;
     height: 40px;
-    background: rgba(255, 255, 255, 0.1);
+    background-color: #D3D3D3;
+    border: 2px solid #8B4513;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    transition: transform 0.1s ease;
 }
 
-.frame:hover {
-    transform: scale(1.1);
+.coffee-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }
 
-.cosmic-panel {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(26, 26, 46, 0.9);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-    text-align: center;
-    z-index: 20;
-    max-width: 300px;
-    width: 90%;
-}
-
-.cosmic-panel h3 {
-    font-family: 'Orbitron', sans-serif;
-    color: #00ffff;
-    margin-bottom: 10px;
-}
-
-.cosmic-panel p {
-    margin: 5px 0;
-    color: #e0e0e0;
-}
-
-.cosmic-panel button {
-    background: linear-gradient(45deg, #ff00ff, #00ffff);
-    border: none;
-    padding: 10px 20px;
-    margin: 5px;
-    font-family: 'Orbitron', sans-serif;
-    color: #1a1a2e;
-    font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: transform 0.1s ease, box-shadow 0.3s ease;
-    display: inline-block; /* Ensure buttons can be centered */
-}
-
-.cosmic-panel button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
-}
-
-/* Center the buttons in the cosmic-panel */
-.cosmic-panel .button-container {
+#coffee-link {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: #FFD700;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    transition: background-color 0.3s;
 }
 
-/* Specific styling for Sell Cube button to ensure visibility */
-#sell-cube {
-    background: linear-gradient(45deg, #ffd700, #ff8c00); /* Gold to orange gradient for Sell Cube */
-    color: #1a1a2e;
+#coffee-link:hover {
+    background-color: #FFC107;
 }
 
-/* Specific styling for Frame Cube button */
-#frame-cube {
-    background: linear-gradient(45deg, #ff00ff, #00ffff); /* Keep the cosmic gradient */
-    color: #1a1a2e;
-}
-
-/* Specific styling for Close Info button */
-#close-info {
-    background: linear-gradient(45deg, #ff4040, #ff8080); /* Red gradient for Close Info */
-    color: #1a1a2e;
+#coffee-icon {
+    margin-right: 8px;
 }
