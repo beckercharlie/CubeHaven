@@ -5,12 +5,14 @@ let cubesArray = [];
 let framedCubes = Array(10).fill(null);
 let selectedCube = null;
 let selectedCubeSource = null;
+let unlockedCubes = ["Common"]; // Start with Common unlocked
+let luckPotionTier = 0; // Tracks the active luck potion tier (0 = none, 1-3 for tiers)
 
 // Constants
 const eggTiers = [
     { 
         name: "Basic", 
-        cost: 100,
+        cost: 100, 
         odds: { 
             Common: 0.95, 
             Rare: 0.03, 
@@ -36,7 +38,7 @@ const eggTiers = [
     },
     { 
         name: "Silver", 
-        cost: 1000,
+        cost: 1000, 
         odds: { 
             Common: 0.80, 
             Rare: 0.10, 
@@ -62,7 +64,7 @@ const eggTiers = [
     },
     { 
         name: "Gold", 
-        cost: 10000,
+        cost: 10000, 
         odds: { 
             Common: 0.60, 
             Rare: 0.20, 
@@ -88,7 +90,7 @@ const eggTiers = [
     },
     { 
         name: "Diamond", 
-        cost: 100000,
+        cost: 100000, 
         odds: { 
             Common: 0.40, 
             Rare: 0.25, 
@@ -114,7 +116,7 @@ const eggTiers = [
     },
     { 
         name: "Mythic", 
-        cost: 1000000,
+        cost: 1000000, 
         odds: { 
             Common: 0.20, 
             Rare: 0.15, 
@@ -163,7 +165,7 @@ const rarities = {
     Primordial: { odds: "1/10,000,000,000,000", cubeRate: 20.0, image: null, sellValue: 500000000 }
 };
 
-// DOM Elements
+// DOM Elements (shared with ui.js)
 const elements = {
     coinCounter: document.getElementById("coin-counter"),
     cubeCounter: document.getElementById("cube-counter"),
@@ -172,6 +174,10 @@ const elements = {
     settingsDropdown: document.getElementById("settings-dropdown"),
     saveGame: document.getElementById("save-game"),
     restartGame: document.getElementById("restart-game"),
+    cubeIndexToggle: document.getElementById("cube-index-toggle"),
+    cubeIndexDropdown: document.getElementById("cube-index-dropdown"),
+    cubeGrid: document.getElementById("cube-grid"),
+    closeCubeIndex: document.getElementById("close-cube-index"),
     canvas: document.getElementById("cube-canvas"),
     cubeInfo: document.getElementById("cube-info"),
     cubeImage: document.getElementById("cube-image"),
@@ -193,7 +199,10 @@ const elements = {
     gameNotification: document.getElementById("game-notification"),
     gameNotificationTitle: document.getElementById("game-notification-title"),
     gameNotificationMessage: document.getElementById("game-notification-message"),
-    closeGameNotification: document.getElementById("close-game-notification")
+    closeGameNotification: document.getElementById("close-game-notification"),
+    luckPotion1: document.getElementById("luck-potion-1"),
+    luckPotion2: document.getElementById("luck-potion-2"),
+    luckPotion3: document.getElementById("luck-potion-3")
 };
 
 const ctx = elements.canvas.getContext("2d");
@@ -294,7 +303,7 @@ function initializeCubeImages() {
             ctx.lineWidth = 1;
             for (let i = 0; i < 3; i++) {
                 const radius = 10 + i * 3;
-                const swirl = (cube.animationTimer + i) % (Math.PI * 2);
+                const swirl = (cube.animationApiKey + i) % (Math.PI * 2);
                 ctx.beginPath();
                 ctx.arc(20, 20, radius, swirl, swirl + Math.PI * 1.5);
                 ctx.stroke();
@@ -571,7 +580,6 @@ function initializeCubeImages() {
         rarities[rarity].draw = designs[rarity];
     }
 }
-initializeCubeImages();
 
 // Utility Functions
 function formatNumber(num) {
@@ -585,47 +593,8 @@ function updateGameState() {
     elements.cubeCounter.textContent = `Cubes: ${formatNumber(cubes)}`;
 }
 
-// Toggle Settings Dropdown
-function toggleSettingsDropdown() {
-    const isVisible = elements.settingsDropdown.style.display === "flex";
-    elements.settingsDropdown.style.display = isVisible ? "none" : "flex";
-}
-
-// Show Hatch Notification
-function showHatchNotification(cube) {
-    if (!cube || !cube.rarity || !cube.image) {
-        console.error("Invalid cube object:", cube);
-        showGameNotification("Error", "Failed to display cube details. Invalid cube data.");
-        return;
-    }
-
-    const rarityData = rarities[cube.rarity];
-    if (!rarityData) {
-        console.error("Rarity data not found for:", cube.rarity);
-        showGameNotification("Error", "Failed to display cube details. Rarity data not found.");
-        return;
-    }
-
-    elements.hatchNotification.style.display = "block";
-    const hatchCtx = elements.hatchCubeImage.getContext("2d");
-    hatchCtx.clearRect(0, 0, 40, 40);
-    rarities[cube.rarity].draw(hatchCtx, cube);
-
-    elements.hatchCubeRarity.textContent = `Rarity: ${cube.rarity || "Unknown"}`;
-    elements.hatchCubeOdds.textContent = `Odds: ${rarityData.odds || "N/A"}`;
-    elements.hatchCubeRate.textContent = `Cubes per Second: ${formatNumber(rarityData.cubeRate || 0)}`;
-    elements.hatchCubeSellValue.textContent = `Sell Value: ${formatNumber(rarityData.sellValue || 0)} coins`;
-}
-
-// Show Game Notification
-function showGameNotification(title, message) {
-    elements.gameNotification.style.display = "block";
-    elements.gameNotificationTitle.textContent = title;
-    elements.gameNotificationMessage.textContent = message;
-}
-
 // Save Game Function
-function saveGame(showNotification = true) {
+function saveGame() {
     const gameState = {
         coins: coins,
         cubes: cubes,
@@ -636,17 +605,16 @@ function saveGame(showNotification = true) {
             targetX: cube.targetX,
             targetY: cube.targetY,
             state: cube.state,
-            pauseTimer: cube.pauseTimer,
-            speed: cube.speed
+            pauseTimer: cube.pauseTimer
         })),
-        framedCubes: framedCubes.map(cube => cube ? { rarity: cube.rarity } : null)
+        framedCubes: framedCubes.map(cube => cube ? { rarity: cube.rarity } : null),
+        unlockedCubes: unlockedCubes,
+        luckPotionTier: luckPotionTier
     };
     localStorage.setItem("cubeHavenSave", JSON.stringify(gameState));
     console.log("Game saved:", gameState);
-    if (showNotification) {
-        showGameNotification("Success", "Game Saved!");
-        toggleSettingsDropdown();
-    }
+    showGameNotification("Success", "Game Saved!");
+    toggleSettingsDropdown();
 }
 
 // Load Game Function
@@ -654,7 +622,7 @@ function loadGame() {
     const savedState = localStorage.getItem("cubeHavenSave");
     if (savedState) {
         const gameState = JSON.parse(savedState);
-        coins = gameState.coins || 1000;
+        coins = gameState.coins || 5000;
         cubes = gameState.cubes || 0;
         cubesArray = gameState.cubesArray.map(cube => ({
             rarity: cube.rarity,
@@ -665,7 +633,6 @@ function loadGame() {
             targetY: cube.targetY,
             state: cube.state,
             pauseTimer: cube.pauseTimer,
-            speed: cube.speed || (Math.random() * 0.4 + 0.3), // Default speed if not saved
             animationTimer: 0,
             particles: []
         }));
@@ -675,9 +642,13 @@ function loadGame() {
             animationTimer: 0,
             particles: []
         } : null);
+        unlockedCubes = gameState.unlockedCubes || ["Common"];
+        luckPotionTier = gameState.luckPotionTier || 0;
         console.log("Game loaded:", gameState);
     }
     renderFramedCubes();
+    renderCubeIndex();
+    updateLuckPotionButtons();
 }
 
 // Restart Game Function
@@ -685,10 +656,12 @@ function restartGame() {
     if (!confirm("Are you sure you want to restart? All progress will be lost.")) {
         return;
     }
-    coins = 1000;
+    coins = 5000;
     cubes = 0;
     cubesArray = [];
-    framedCubes = Array(10).fill(null);
+    framedCubes = EmissionsArray(10).fill(null);
+    unlockedCubes = ["Common"];
+    luckPotionTier = 0;
     selectedCube = null;
     selectedCubeSource = null;
     localStorage.removeItem("cubeHavenSave");
@@ -696,74 +669,44 @@ function restartGame() {
     elements.hatchNotification.style.display = "none";
     elements.gameNotification.style.display = "none";
     renderFramedCubes();
+    renderCubeIndex();
+    updateLuckPotionButtons();
     updateGameState();
     console.log("Game restarted");
     showGameNotification("Success", "Game Restarted!");
     toggleSettingsDropdown();
 }
 
-// Helper Function to Check if Target is Too Close to Other Cubes
-function isTooCloseToOtherCubes(targetX, targetY, excludeCube) {
-    const minDistance = 40; // Minimum distance to prevent clustering (cube size is 40x40)
-    for (let cube of cubesArray) {
-        if (cube === excludeCube) continue;
-        const dx = targetX - cube.x;
-        const dy = targetY - cube.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance < minDistance) {
-            return true;
-        }
-    }
-    return false;
-}
-
 // Cube Movement (for cubes in the fenced area)
 function moveCubes() {
     cubesArray.forEach(cube => {
-        if (!cube.speed) {
-            cube.speed = Math.random() * 0.4 + 0.3; // Random speed between 0.3 and 0.7 units per frame
-        }
-
         if (cube.state === "moving") {
             const dx = cube.targetX - cube.x;
             const dy = cube.targetY - cube.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance > cube.speed) {
-                cube.x += (dx / distance) * cube.speed;
-                cube.y += (dy / distance) * cube.speed;
+            const speed = 0.5;
+            if (distance > speed) {
+                cube.x += (dx / distance) * speed;
+                cube.y += (dy / distance) * speed;
             } else {
                 cube.x = cube.targetX;
                 cube.y = cube.targetY;
                 cube.state = "paused";
-                cube.pauseTimer = Math.random() * 2500 + 500; // Random pause between 0.5 and 3 seconds
+                cube.pauseTimer = 2000;
             }
         } else if (cube.state === "paused") {
             cube.pauseTimer -= 16;
             if (cube.pauseTimer <= 0) {
-                let attempts = 0;
-                const maxAttempts = 10;
-                let newTargetX, newTargetY, distFromCenter;
-
-                do {
-                    const angle = Math.random() * 2 * Math.PI;
-                    const distance = Math.random() * 140 + 20; // Random distance between 20 and 160
-                    newTargetX = 200 + Math.cos(angle) * distance;
-                    newTargetY = 200 + Math.sin(angle) * distance;
-                    distFromCenter = Math.sqrt((newTargetX - 200) ** 2 + (newTargetY - 200) ** 2);
-                    
-                    // Ensure the target is within the fence
-                    if (distFromCenter > fenceRadius - 20) {
-                        const scale = (fenceRadius - 20) / distFromCenter;
-                        newTargetX = 200 + (newTargetX - 200) * scale;
-                        newTargetY = 200 + (newTargetY - 200) * scale;
-                    }
-
-                    attempts++;
-                } while (isTooCloseToOtherCubes(newTargetX, newTargetY, cube) && attempts < maxAttempts);
-
-                cube.targetX = newTargetX;
-                cube.targetY = newTargetY;
-                cube.speed = Math.random() * 0.4 + 0.3; // Randomize speed for the next movement
+                const angle = Math.random() * 2 * Math.PI;
+                const distance = Math.random() * 50 + 20;
+                cube.targetX = 200 + Math.cos(angle) * Math.min(distance, fenceRadius - 20);
+                cube.targetY = 200 + Math.sin(angle) * Math.min(distance, fenceRadius - 20);
+                const distFromCenter = Math.sqrt((cube.targetX - 200) ** 2 + (cube.targetY - 200) ** 2);
+                if (distFromCenter > fenceRadius - 20) {
+                    const scale = (fenceRadius - 20) / distFromCenter;
+                    cube.targetX = 200 + (cube.targetX - 200) * scale;
+                    cube.targetY = 200 + (cube.targetY - 200) * scale;
+                }
                 cube.state = "moving";
             }
         }
@@ -823,13 +766,79 @@ function removeFromFrame(frameIndex) {
     cube.targetY = 200;
     cube.state = "paused";
     cube.pauseTimer = 0;
-    cube.speed = Math.random() * 0.4 + 0.3; // Assign a random speed when returning to fenced area
     cubesArray.push(cube);
     framedCubes[frameIndex] = null;
     renderFramedCubes();
     elements.cubeInfo.style.display = "none";
     selectedCube = null;
     selectedCubeSource = null;
+}
+
+// Update Luck Potion Button Texts
+function updateLuckPotionButtons() {
+    elements.luckPotion1.textContent = luckPotionTier === 1 ? "Luck Potion T1 Active!" : "Luck Potion T1 (5,000 coins)";
+    elements.luckPotion2.textContent = luckPotionTier === 2 ? "Luck Potion T2 Active!" : "Luck Potion T2 (25,000 coins)";
+    elements.luckPotion3.textContent = luckPotionTier === 3 ? "Luck Potion T3 Active!" : "Luck Potion T3 (100,000 coins)";
+}
+
+// Activate Luck Potion
+function activateLuckPotion(tier) {
+    const costs = {
+        1: 5000,
+        2: 25000,
+        3: 100000
+    };
+    const cost = costs[tier];
+    if (coins < cost) {
+        showGameNotification("Error", `Not enough coins to buy Luck Potion Tier ${tier}!`);
+        return;
+    }
+    if (luckPotionTier > 0) {
+        showGameNotification("Info", "A luck potion is already active!");
+        return;
+    }
+    coins -= cost;
+    luckPotionTier = tier;
+    updateLuckPotionButtons();
+    updateGameState();
+    showGameNotification("Success", `Luck Potion Tier ${tier} activated! Your next roll will have increased odds for rarer cubes!`);
+}
+
+// Modify Odds for Luck Potion
+function modifyOddsForLuckPotion(originalOdds, tier) {
+    const multipliers = {
+        1: 1.5, // Tier 1: 1.5x odds for non-Common
+        2: 3,   // Tier 2: 3x odds for non-Common
+        3: 5    // Tier 3: 5x odds for non-Common
+    };
+    const luckMultiplier = multipliers[tier];
+    const modifiedOdds = { ...originalOdds };
+    let totalNonCommon = 0;
+
+    // Multiply odds for all rarities except Common
+    for (let rarity in modifiedOdds) {
+        if (rarity !== "Common") {
+            modifiedOdds[rarity] *= luckMultiplier;
+            totalNonCommon += modifiedOdds[rarity];
+        }
+    }
+
+    // Adjust Common odds to ensure total probability sums to 1
+    modifiedOdds.Common = 1 - totalNonCommon;
+
+    // If Common odds become negative, redistribute proportionally
+    if (modifiedOdds.Common < 0) {
+        const total = totalNonCommon + Math.abs(modifiedOdds.Common);
+        const scale = 1 / total;
+        for (let rarity in modifiedOdds) {
+            if (rarity !== "Common") {
+                modifiedOdds[rarity] *= scale;
+            }
+        }
+        modifiedOdds.Common = 0;
+    }
+
+    return modifiedOdds;
 }
 
 // Rolling Logic
@@ -840,11 +849,20 @@ function rollCube(tierIndex) {
         return;
     }
     coins -= tier.cost;
+
+    // Apply Luck Potion if active
+    let odds = { ...tier.odds };
+    if (luckPotionTier > 0) {
+        odds = modifyOddsForLuckPotion(tier.odds, luckPotionTier);
+        luckPotionTier = 0; // Deactivate after one roll
+        updateLuckPotionButtons();
+    }
+
     const rand = Math.random();
     let cumulative = 0;
     let rarity = "Common";
-    for (let r in tier.odds) {
-        cumulative += tier.odds[r];
+    for (let r in odds) {
+        cumulative += odds[r];
         if (rand < cumulative) {
             rarity = r;
             break;
@@ -859,11 +877,15 @@ function rollCube(tierIndex) {
         targetY: 200,
         state: "paused",
         pauseTimer: 0,
-        speed: Math.random() * 0.4 + 0.3, // Initialize with a random speed
         animationTimer: 0,
         particles: []
     };
     cubesArray.push(cube);
+    // Unlock the cube if not already unlocked
+    if (!unlockedCubes.includes(rarity)) {
+        unlockedCubes.push(rarity);
+        renderCubeIndex();
+    }
     console.log(`Hatched a ${rarity} cube from a ${tier.name} egg! Total cubes: ${cubesArray.length}`);
     updateGameState();
     showHatchNotification(cube);
@@ -889,140 +911,6 @@ elements.sellCubes.addEventListener("click", () => {
     updateGameState();
 });
 
-// Settings Dropdown Toggle
-elements.settingsToggle.addEventListener("click", () => {
-    toggleSettingsDropdown();
-});
-
-// Save Game Button
-elements.saveGame.addEventListener("click", () => {
-    saveGame(true);
-});
-
-// Restart Game Button
-elements.restartGame.addEventListener("click", () => {
-    restartGame();
-});
-
-// Roll Buttons
-document.querySelectorAll(".egg-button").forEach(button => {
-    button.addEventListener("click", () => {
-        const tier = parseInt(button.dataset.tier) - 1;
-        rollCube(tier);
-    });
-});
-
-// Cube Click Detection (Fenced Area)
-elements.canvas.addEventListener("click", (event) => {
-    const rect = elements.canvas.getBoundingClientRect();
-    const mouseX = event.clientX - rect.left;
-    const mouseY = event.clientY - rect.top;
-
-    selectedCube = null;
-    selectedCubeSource = null;
-    cubesArray.forEach(cube => {
-        const dx = mouseX - cube.x;
-        const dy = mouseY - cube.y;
-        if (Math.sqrt(dx * dx + dy * dy) < 20) {
-            selectedCube = cube;
-            selectedCubeSource = "fenced";
-        }
-    });
-
-    if (selectedCube) {
-        elements.cubeInfo.style.display = "block";
-        elements.hatchNotification.style.display = "none";
-        elements.gameNotification.style.display = "none";
-        const cubeCtx = elements.cubeImage.getContext("2d");
-        cubeCtx.clearRect(0, 0, 40, 40);
-        rarities[selectedCube.rarity].draw(cubeCtx, selectedCube);
-        elements.cubeRarity.textContent = `Rarity: ${selectedCube.rarity}`;
-        elements.cubeOdds.textContent = `Odds: ${rarities[selectedCube.rarity].odds}`;
-        elements.cubeRate.textContent = `Cubes per Second: ${formatNumber(rarities[selectedCube.rarity].cubeRate)}`;
-        elements.cubeSellValue.textContent = `Sell Value: ${formatNumber(rarities[selectedCube.rarity].sellValue)} coins`;
-        elements.frameCube.style.display = "block";
-        elements.removeFromFrame.style.display = "none";
-    } else {
-        elements.cubeInfo.style.display = "none";
-    }
-});
-
-// Frame Click Detection
-document.querySelectorAll(".frame").forEach(frame => {
-    frame.addEventListener("click", (event) => {
-        const frameId = parseInt(frame.dataset.frameId);
-        const cube = framedCubes[frameId];
-        if (cube) {
-            selectedCube = cube;
-            selectedCubeSource = frameId;
-            elements.cubeInfo.style.display = "block";
-            elements.hatchNotification.style.display = "none";
-            elements.gameNotification.style.display = "none";
-            const cubeCtx = elements.cubeImage.getContext("2d");
-            cubeCtx.clearRect(0, 0, 40, 40);
-            rarities[cube.rarity].draw(cubeCtx, cube);
-            elements.cubeRarity.textContent = `Rarity: ${cube.rarity}`;
-            elements.cubeOdds.textContent = `Odds: ${rarities[cube.rarity].odds}`;
-            elements.cubeRate.textContent = `Cubes per Second: ${formatNumber(rarities[cube.rarity].cubeRate)}`;
-            elements.cubeSellValue.textContent = `Sell Value: ${formatNumber(rarities[cube.rarity].sellValue)} coins`;
-            elements.frameCube.style.display = "none";
-            elements.removeFromFrame.style.display = "block";
-        }
-    });
-});
-
-// Sell Cube
-elements.sellCube.addEventListener("click", () => {
-    if (!selectedCube || selectedCubeSource === null) return;
-    if (selectedCubeSource === "fenced") {
-        const index = cubesArray.indexOf(selectedCube);
-        if (index !== -1) {
-            coins += rarities[selectedCube.rarity].sellValue;
-            cubesArray.splice(index, 1);
-        }
-    } else {
-        const frameIndex = selectedCubeSource;
-        coins += rarities[selectedCube.rarity].sellValue;
-        framedCubes[frameIndex] = null;
-        renderFramedCubes();
-    }
-    selectedCube = null;
-    selectedCubeSource = null;
-    elements.cubeInfo.style.display = "none";
-    updateGameState();
-});
-
-// Frame Cube Button
-elements.frameCube.addEventListener("click", () => {
-    if (selectedCube && selectedCubeSource === "fenced") {
-        frameCube(selectedCube);
-    }
-});
-
-// Remove from Frame Button
-elements.removeFromFrame.addEventListener("click", () => {
-    if (selectedCube && typeof selectedCubeSource === "number") {
-        removeFromFrame(selectedCubeSource);
-    }
-});
-
-// Close Info Panel
-elements.closeInfo.addEventListener("click", () => {
-    elements.cubeInfo.style.display = "none";
-    selectedCube = null;
-    selectedCubeSource = null;
-});
-
-// Close Hatch Notification
-elements.closeHatch.addEventListener("click", () => {
-    elements.hatchNotification.style.display = "none";
-});
-
-// Close Game Notification
-elements.closeGameNotification.addEventListener("click", () => {
-    elements.gameNotification.style.display = "none";
-});
-
 // Game Loop
 function gameLoop() {
     moveCubes();
@@ -1031,74 +919,9 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-// Load saved game on start
+// Initialize
+initializeCubeImages();
+setRandomFavicon();
 loadGame();
 gameLoop();
-
-// Initialize
 updateGameState();
-
-// Auto-Save Every 3 Minutes
-setInterval(() => {
-    saveGame(false);
-}, 180000);
-
-// Starry Background Animation
-class Star {
-    constructor(x, y, radius, brightness) {
-        this.x = x;
-        this.y = y;
-        this.radius = radius;
-        this.brightness = brightness;
-        this.twinkleSpeed = Math.random() * 0.05 + 0.02;
-        this.twinkleTimer = Math.random() * Math.PI * 2;
-    }
-
-    update() {
-        this.twinkleTimer += this.twinkleSpeed;
-        this.brightness = 0.5 + Math.sin(this.twinkleTimer) * 0.5;
-    }
-
-    draw(ctx) {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${this.brightness})`;
-        ctx.fill();
-    }
-}
-
-const starryCanvas = document.getElementById("starry-background");
-const starryCtx = starryCanvas.getContext("2d");
-const stars = [];
-
-function resizeStarryCanvas() {
-    starryCanvas.width = window.innerWidth;
-    starryCanvas.height = window.innerHeight;
-}
-
-function initStars() {
-    resizeStarryCanvas();
-    stars.length = 0;
-    const numStars = Math.floor((window.innerWidth * window.innerHeight) / 5000);
-    for (let i = 0; i < numStars; i++) {
-        stars.push(new Star(
-            Math.random() * window.innerWidth,
-            Math.random() * window.innerHeight,
-            Math.random() * 2 + 1,
-            Math.random()
-        ));
-    }
-}
-
-function animateStars() {
-    starryCtx.clearRect(0, 0, starryCanvas.width, starryCanvas.height);
-    stars.forEach(star => {
-        star.update();
-        star.draw(starryCtx);
-    });
-    requestAnimationFrame(animateStars);
-}
-
-window.addEventListener("resize", initStars);
-initStars();
-animateStars();
