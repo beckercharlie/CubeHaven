@@ -28,8 +28,15 @@ body {
     color: #4B0082;
 }
 
+.stats-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    justify-content: center;
+}
+
 .stats p {
-    margin: 5px 0;
+    margin: 0;
     font-size: 16px;
 }
 
@@ -75,7 +82,7 @@ body {
 
 .egg-shop {
     margin-top: 20px;
-    width: 300px; /* Fixed width to control the grid */
+    width: 350px; /* Slightly wider to accommodate horizontal layout */
 }
 
 .egg-shop h3 {
@@ -163,10 +170,17 @@ body {
     animation: pulse 0.3s ease-in-out;
 }
 
+/* Horizontal layout for luck potion buttons */
+.luck-potion-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
 /* Base style for luck potion buttons */
 .luck-potion {
-    margin-top: 10px;
-    padding: 8px 16px;
+    padding: 6px 12px;
     color: #FFF;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -296,18 +310,27 @@ body {
     z-index: 10;
     max-height: 400px;
     overflow-y: auto;
+    width: 300px; /* Reduced width for a neater appearance */
+}
+
+.cube-index-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 #cube-index-dropdown h3 {
-    margin: 0 0 10px 0;
+    margin: 0;
     font-size: 18px;
     color: #4B0082;
 }
 
 #cube-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr); /* 4 columns for better space usage */
     gap: 10px;
+    justify-items: center;
 }
 
 .cube-grid-item {
@@ -323,10 +346,12 @@ body {
 .cube-grid-item p {
     margin: 0;
     font-size: 12px;
+    text-align: center;
 }
 
 #close-cube-index {
-    margin-top: 10px;
+    padding: 4px 8px; /* Smaller padding for a smaller button */
+    font-size: 12px; /* Smaller font size */
     background-color: #BA55D3;
     color: #FFF;
 }
