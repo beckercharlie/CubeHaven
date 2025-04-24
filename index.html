@@ -17,35 +17,20 @@
                 <button id="restart-game">Restart Game</button>
                 <button id="cube-index-toggle">Cube Index</button>
             </div>
-            <!-- Cube Index Dropdown -->
             <div id="cube-index-dropdown" class="cube-index-dropdown">
-                <div class="cube-index-header">
-                    <h3>Cube Index</h3>
-                    <button id="close-cube-index">Close</button>
-                </div>
-                <div id="cube-grid" class="cube-grid"></div>
+                <div id="cube-index-grid" class="cube-index-grid"></div>
+                <button id="close-cube-index">Close</button>
             </div>
         </div>
-        <!-- Buy Me a Coffee Button -->
-        <div class="coffee-button">
-            <a href="https://buymeacoffee.com/cbecker" target="_blank" id="coffee-link">
-                <svg id="coffee-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M5 2H19C20.1 2 21 2.9 21 4V6C21 7.1 20.1 8 19 8H18V16C18 17.7 16.7 19 15 19H9C7.3 19 6 17.7 6 16V8H5C3.9 8 3 7.1 3 6V4C3 2.9 3.9 2 5 2Z" fill="#8B4513"/>
-                    <path d="M6 8H18V16C18 17.7 16.7 19 15 19H9C7.3 19 6 17.7 6 16V8Z" fill="#D2B48C"/>
-                    <path d="M8 1V3H16V1H8Z" fill="#8B4513"/>
-                </svg>
-                <span>Buy Me a Coffee</span>
-            </a>
+        <div class="coffee">
+            <button id="buy-me-a-coffee" class="coffee-button">Buy me a coffee ☕</button>
         </div>
         <div class="stats">
             <h2>Cube Haven</h2>
-            <div class="stats-row">
-                <p id="coin-counter">Coins: 1000</p>
-                <p id="cube-counter">Cubes: 0</p>
-                <button id="sell-cubes">Sell Cubes (1 cube = 10 coins)</button>
-            </div>
+            <p id="coin-counter">Coins: 1000</p>
+            <p id="cube-counter">Cubes: 0</p>
+            <button id="sell-cubes">Sell Cubes (1 cube = 10 coins)</button>
         </div>
-        <!-- Left Frames -->
         <div class="frame-column left-frames">
             <div class="frame" data-frame-id="0"><canvas id="frame-0-canvas" width="40" height="40"></canvas></div>
             <div class="frame" data-frame-id="1"><canvas id="frame-1-canvas" width="40" height="40"></canvas></div>
@@ -56,7 +41,6 @@
         <div class="fenced-area">
             <canvas id="cube-canvas" width="400" height="400"></canvas>
         </div>
-        <!-- Right Frames -->
         <div class="frame-column right-frames">
             <div class="frame" data-frame-id="5"><canvas id="frame-5-canvas" width="40" height="40"></canvas></div>
             <div class="frame" data-frame-id="6"><canvas id="frame-6-canvas" width="40" height="40"></canvas></div>
@@ -66,18 +50,38 @@
         </div>
         <div class="egg-shop">
             <h3>Egg Shop</h3>
-            <div class="egg-shop-buttons">
+            <div class="egg-button-container" data-tier="1">
                 <button class="egg-button" data-tier="1">Basic Egg (100 coins)</button>
+                <span id="clover-1" class="clover-emoji" style="display: none;">🍀</span>
+            </div>
+            <div class="egg-button-container" data-tier="2" style="display: none;">
                 <button class="egg-button" data-tier="2">Silver Egg (1,000 coins)</button>
+                <span id="clover-2" class="clover-emoji" style="display: none;">🍀</span>
+            </div>
+            <div class="egg-button-container" data-tier="3" style="display: none;">
                 <button class="egg-button" data-tier="3">Gold Egg (10,000 coins)</button>
+                <span id="clover-3" class="clover-emoji" style="display: none;">🍀</span>
+            </div>
+            <div class="egg-button-container" data-tier="4" style="display: none;">
                 <button class="egg-button" data-tier="4">Diamond Egg (100,000 coins)</button>
+                <span id="clover-4" class="clover-emoji" style="display: none;">🍀</span>
+            </div>
+            <div class="egg-button-container" data-tier="5" style="display: none;">
                 <button class="egg-button" data-tier="5">Mythic Egg (1,000,000 coins)</button>
+                <span id="clover-5" class="clover-emoji" style="display: none;">🍀</span>
             </div>
-            <div class="luck-potion-buttons">
-                <button id="luck-potion-1" class="luck-potion luck-potion-1">Luck Potion T1 (5,000 coins)</button>
-                <button id="luck-potion-2" class="luck-potion luck-potion-2">Luck Potion T2 (25,000 coins)</button>
-                <button id="luck-potion-3" class="luck-potion luck-potion-3">Luck Potion T3 (100,000 coins)</button>
+            <div id="egg-unlock-container"></div>
+            <h3 id="potion-shop-title" style="display: none;">Luck Potions</h3>
+            <div class="potion-button-container" data-potion-tier="1" style="display: none;">
+                <button class="potion-button" data-potion-tier="1">Luck Potion T1 (5,000 coins)</button>
             </div>
+            <div class="potion-button-container" data-potion-tier="2" style="display: none;">
+                <button class="potion-button" data-potion-tier="2">Luck Potion T2 (25,000 coins)</button>
+            </div>
+            <div class="potion-button-container" data-potion-tier="3" style="display: none;">
+                <button class="potion-button" data-potion-tier="3">Luck Potion T3 (100,000 coins)</button>
+            </div>
+            <div id="potion-unlock-container" style="display: none;"></div>
         </div>
         <div id="cube-info" class="cube-info">
             <h3>Cube Info</h3>
@@ -89,7 +93,7 @@
             <button id="sell-cube">Sell Cube</button>
             <button id="frame-cube">Frame Cube</button>
             <button id="remove-from-frame" style="display: none;">Remove from Frame</button>
-            <button id="close-info">Close Info</button>
+            <button id="close-info">Close</button>
         </div>
         <div id="hatch-notification" class="hatch-notification">
             <h3>You Got a New Cube!</h3>
@@ -106,7 +110,6 @@
             <button id="close-game-notification">Close</button>
         </div>
     </div>
-    <!-- Placeholder Cube Images (Will be generated dynamically) -->
     <canvas id="cube-common" width="40" height="40" style="display: none;"></canvas>
     <canvas id="cube-rare" width="40" height="40" style="display: none;"></canvas>
     <canvas id="cube-epic" width="40" height="40" style="display: none;"></canvas>
@@ -115,6 +118,10 @@
     <canvas id="cube-galactic" width="40" height="40" style="display: none;"></canvas>
     <canvas id="cube-celestial" width="40" height="40" style="display: none;"></canvas>
     <canvas id="cube-astronomic" width="40" height="40" style="display: none;"></canvas>
+    <canvas id="cube-exotic" width="40" height="40" style="display: none;"></canvas>
+    <canvas id="cube-mystic" width="40" height="40" style="display: none;"></canvas>
+    <canvas id="cube-radiant" width="40" height="40" style="display: none;"></canvas>
+    <canvas id="cube-vortex" width="40" height="40" style="display: none;"></canvas>
     <canvas id="cube-insane" width="40" height="40" style="display: none;"></canvas>
     <canvas id="cube-unfathomable" width="40" height="40" style="display: none;"></canvas>
     <canvas id="cube-ethereal" width="40" height="40" style="display: none;"></canvas>
@@ -128,6 +135,5 @@
     <canvas id="cube-infinity" width="40" height="40" style="display: none;"></canvas>
     <canvas id="cube-primordial" width="40" height="40" style="display: none;"></canvas>
     <script src="script.js"></script>
-    <script src="ui.js"></script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'935074c27d0244df',t:'MTc0NTQ0Mzc2My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
