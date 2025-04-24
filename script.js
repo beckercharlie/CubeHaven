@@ -1448,7 +1448,7 @@ if (elements.frameCube) elements.frameCube.addEventListener("click", frameCube);
 if (elements.removeFromFrame) elements.removeFromFrame.addEventListener("click", removeFromFrame);
 if (elements.buyMeACoffee) {
     elements.buyMeACoffee.addEventListener("click", () => {
-        window.open("https://www.buymeacoffee.com/yourusername", "_blank");
+        window.open("https://buymeacoffee.com/cbecker", "_blank");
     });
 }
 
