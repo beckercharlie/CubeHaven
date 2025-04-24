@@ -1,77 +1,95 @@
-body {
+/* Reset and Base Styles */
+* {
+    box-sizing: border-box;
     margin: 0;
+    padding: 0;
+}
+
+body {
     font-family: 'Poppins', sans-serif;
-    background-color: #87CEEB;
-    color: #333;
+    background: linear-gradient(135deg, #1e1e2f 0%, #27293d 100%);
+    color: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+    overflow: auto;
+    padding: 20px;
 }
 
+/* Game Container */
 .game-container {
     text-align: center;
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
+    max-width: 1200px;
+    width: 100%;
+    padding: 20px;
+    background: rgba(30, 30, 47, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
+/* Stats Section */
 .stats {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .stats h2 {
-    margin: 0;
-    font-size: 24px;
-    color: #4B0082;
-}
-
-.stats-row {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    justify-content: center;
+    font-size: 28px;
+    font-weight: 600;
+    color: #ffd700;
+    margin-bottom: 10px;
 }
 
 .stats p {
-    margin: 0;
-    font-size: 16px;
+    font-size: 18px;
+    margin: 8px 0;
+    color: #e0e0e0;
 }
 
 .stats button,
 .egg-shop button,
 .cube-info button,
 .hatch-notification button,
-.game-notification button {
-    padding: 8px 16px;
-    margin: 5px;
+.game-notification button,
+.cube-index-dropdown button,
+.coffee-button,
+.settings-toggle,
+.settings-dropdown button {
+    padding: 10px 20px;
+    margin: 8px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    transition: background-color 0.3s, transform 0.2s, opacity 0.2s;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
 }
 
 .stats button {
-    background-color: #FFD700;
-    color: #333;
+    background: #ffd700;
+    color: #1e1e2f;
 }
 
 .stats button:hover {
-    background-color: #FFC107;
+    background: #ffca28;
+    transform: translateY(-2px);
 }
 
+/* Fenced Area */
 .fenced-area {
     width: 400px;
     height: 400px;
-    background-color: #90EE90;
-    border: 5px solid #8B4513;
+    background: #2e7d32;
+    border: 8px solid #3e2723;
     border-radius: 50%;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 #cube-canvas {
@@ -80,337 +98,356 @@ body {
     left: 0;
 }
 
+/* Egg Shop */
 .egg-shop {
-    margin-top: 20px;
-    width: 350px; /* Slightly wider to accommodate horizontal layout */
+    margin-top: 30px;
+    width: 100%;
+    max-width: 400px;
 }
 
 .egg-shop h3 {
-    margin: 0 0 10px 0;
-    font-size: 20px;
-    color: #4B0082;
+    font-size: 24px;
+    font-weight: 600;
+    color: #ffd700;
+    margin: 15px 0;
 }
 
-/* Grid layout for egg buttons */
-.egg-shop-buttons {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 buttons in the first row */
-    gap: 8px; /* Reduced gap for a tighter layout */
-    justify-items: center;
+.egg-button-container,
+.potion-button-container,
+.unlock-button-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
 }
 
-/* Adjust the last two buttons to be centered in the second row */
-.egg-shop button:nth-child(4),
-.egg-shop button:nth-child(5) {
-    grid-column: span 1;
+.egg-button,
+.potion-button,
+.unlock-button {
+    width: 100%;
+    margin: 10px 0;
 }
 
-/* Specific positioning for the last two buttons to center them */
-.egg-shop button:nth-child(4) {
-    grid-column: 1 / 2;
-    grid-row: 2;
+.egg-button[data-tier="1"] {
+    background: #b0bec5;
+    color: #1e1e2f;
 }
 
-.egg-shop button:nth-child(5) {
-    grid-column: 2 / 3;
-    grid-row: 2;
+.egg-button[data-tier="2"] {
+    background: #78909c;
+    color: #ffffff;
 }
 
-/* Style for egg buttons */
-.egg-shop button {
-    padding: 6px 12px; /* Smaller padding for a more compact button */
-    font-size: 12px; /* Smaller font size */
-    border-radius: 8px; /* Slightly more rounded corners for a softer look */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    transition: transform 0.2s, opacity 0.2s;
-    color: #FFF; /* White text for better contrast on vibrant colors */
+.egg-button[data-tier="3"] {
+    background: #ffd700;
+    color: #1e1e2f;
 }
 
-/* Unique colors for each egg button */
-.egg-shop button[data-tier="1"] { /* Basic Egg */
-    background-color: #A9A9A9; /* Light gray, simple and unassuming */
+.egg-button[data-tier="4"] {
+    background: #00bcd4;
+    color: #ffffff;
 }
 
-.egg-shop button[data-tier="2"] { /* Silver Egg */
-    background-color: #C0C0C0; /* Silver */
+.egg-button[data-tier="5"] {
+    background: #ff5722;
+    color: #ffffff;
 }
 
-.egg-shop button[data-tier="3"] { /* Gold Egg */
-    background-color: #FFD700; /* Gold */
+.egg-button:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-.egg-shop button[data-tier="4"] { /* Diamond Egg */
-    background-color: #00CED1; /* Cyan, reminiscent of a diamond's sparkle */
+.clover-emoji {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    font-size: 24px;
+    pointer-events: none;
 }
 
-.egg-shop button[data-tier="5"] { /* Mythic Egg */
-    background-color: #FF00FF; /* Magenta, vibrant and mystical */
+.potion-button {
+    background: #4caf50;
+    color: #ffffff;
+    width: 100%;
+    margin: 10px 0;
 }
 
-/* Hover effect for egg buttons */
-.egg-shop button:hover {
-    transform: scale(1.05); /* Slight scale-up on hover */
-    opacity: 0.95; /* Subtle fade to indicate interaction */
+.potion-button:nth-of-type(1) {
+    background: #8bc34a;
 }
 
-/* Pulse animation for egg buttons on click */
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.1);
-    }
-    100% {
-        transform: scale(1);
-    }
+.potion-button:nth-of-type(2) {
+    background: #689f38;
 }
 
-.egg-shop button.pulse {
-    animation: pulse 0.3s ease-in-out;
+.potion-button:nth-of-type(3) {
+    background: #388e3c;
 }
 
-/* Horizontal layout for luck potion buttons */
-.luck-potion-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 10px;
+.potion-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Base style for luck potion buttons */
-.luck-potion {
-    padding: 6px 12px;
-    color: #FFF;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, opacity 0.2s;
-    font-size: 12px;
+.unlock-button {
+    background: #ff9800;
+    color: #ffffff;
+    width: 100%;
+    margin: 10px 0;
 }
 
-.luck-potion:hover {
-    transform: scale(1.05);
-    opacity: 0.95;
+.unlock-button:hover {
+    background: #fb8c00;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Tier-specific colors for luck potions */
-.luck-potion-1 {
-    background-color: #32CD32; /* Lime green for Tier 1 */
+/* Coffee Button */
+.coffee {
+    position: absolute;
+    top: 20px;
+    right: 20px;
 }
 
-.luck-potion-2 {
-    background-color: #FF69B4; /* Hot pink for Tier 2 */
+.coffee-button {
+    background: #ffd700;
+    color: #1e1e2f;
 }
 
-.luck-potion-3 {
-    background-color: #FFD700; /* Gold for Tier 3 */
+.coffee-button:hover {
+    background: #ffca28;
+    transform: translateY(-2px);
 }
 
+/* Modals (Cube Info, Notifications, Cube Index) */
 .cube-info,
 .hatch-notification,
-.game-notification {
-    position: absolute;
+.game-notification,
+.cube-index-dropdown {
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #FFF;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background: #27293d;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     display: none;
     text-align: center;
+    z-index: 1000;
+    max-width: 90%;
+    width: 400px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .cube-info h3,
 .hatch-notification h3,
-.game-notification h3 {
-    margin: 0 0 10px 0;
-    font-size: 20px;
-    color: #4B0082;
+.game-notification h3,
+.cube-index-dropdown h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #ffd700;
+    margin-bottom: 15px;
 }
 
 .cube-info p,
 .hatch-notification p,
-.game-notification p {
-    margin: 5px 0;
-    font-size: 14px;
+.game-notification p,
+.cube-index-grid p {
+    font-size: 16px;
+    margin: 8px 0;
+    color: #e0e0e0;
 }
 
 .cube-info button,
 .hatch-notification button,
-.game-notification button {
-    background-color: #BA55D3;
-    color: #FFF;
+.game-notification button,
+.cube-index-dropdown button {
+    background: #ffd700;
+    color: #1e1e2f;
 }
 
 .cube-info button:hover,
 .hatch-notification button:hover,
-.game-notification button:hover {
-    background-color: #9932CC;
+.game-notification button:hover,
+.cube-index-dropdown button:hover {
+    background: #ffca28;
+    transform: translateY(-2px);
 }
 
+/* Settings */
 .settings {
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 20px;
+    left: 20px;
 }
 
-.settings-toggle,
-.settings-dropdown button,
-#close-cube-index {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    transition: background-color 0.3s;
+.settings-toggle {
+    background: #ffd700;
+    color: #1e1e2f;
 }
 
-#settings-toggle {
-    background-color: #4682B4;
-    color: #FFF;
-}
-
-#settings-toggle:hover {
-    background-color: #4169E1;
+.settings-toggle:hover {
+    background: #ffca28;
+    transform: translateY(-2px);
 }
 
 .settings-dropdown {
     display: none;
     flex-direction: column;
     position: absolute;
-    top: 40px;
+    top: 50px;
     left: 0;
-    background-color: #FFF;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    z-index: 10;
+    background: #27293d;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    z-index: 1000;
 }
 
 .settings-dropdown button {
-    background-color: #87CEEB;
-    color: #333;
-    margin: 5px;
+    background: #ffd700;
+    color: #1e1e2f;
+    margin: 5px 0;
 }
 
 .settings-dropdown button:hover {
-    background-color: #00BFFF;
+    background: #ffca28;
+    transform: translateY(-2px);
 }
 
-#cube-index-dropdown {
-    display: none;
-    position: absolute;
-    top: 40px;
-    left: 0;
-    background-color: #FFF;
-    padding: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    z-index: 10;
-    max-height: 400px;
-    overflow-y: auto;
-    width: 300px; /* Reduced width for a neater appearance */
-}
-
-.cube-index-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-#cube-index-dropdown h3 {
-    margin: 0;
-    font-size: 18px;
-    color: #4B0082;
-}
-
-#cube-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 columns for better space usage */
-    gap: 10px;
-    justify-items: center;
-}
-
-.cube-grid-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.cube-grid-item canvas {
-    margin-bottom: 5px;
-}
-
-.cube-grid-item p {
-    margin: 0;
-    font-size: 12px;
-    text-align: center;
-}
-
-#close-cube-index {
-    padding: 4px 8px; /* Smaller padding for a smaller button */
-    font-size: 12px; /* Smaller font size */
-    background-color: #BA55D3;
-    color: #FFF;
-}
-
-#close-cube-index:hover {
-    background-color: #9932CC;
-}
-
+/* Frame Columns */
 .frame-column {
     position: absolute;
-    top: 150px;
+    top: 50%;
+    transform: translateY(-50%);
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
 }
 
 .left-frames {
-    left: 50px;
+    left: 30px;
 }
 
 .right-frames {
-    right: 50px;
+    right: 30px;
 }
 
 .frame {
-    width: 40px;
-    height: 40px;
-    background-color: #D3D3D3;
-    border: 2px solid #8B4513;
-    border-radius: 5px;
+    width: 60px;
+    height: 60px;
+    background: #27293d;
+    border: 3px solid #ffd700;
+    border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    transition: transform 0.3s ease;
 }
 
-.coffee-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+.frame:hover {
+    transform: scale(1.05);
 }
 
-#coffee-link {
+.frame canvas {
+    width: 50px;
+    height: 50px;
+}
+
+/* Cube Index Dropdown */
+.cube-index-dropdown {
+    width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.cube-index-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 15px;
+}
+
+.cube-index-item {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    padding: 8px 16px;
-    background-color: #FFD700;
-    color: #333;
-    text-decoration: none;
-    border-radius: 5px;
-    font-family: 'Poppins', sans-serif;
+    padding: 10px;
+    background: #1e1e2f;
+    border-radius: 8px;
+}
+
+.cube-index-item canvas {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 8px;
+}
+
+.cube-index-item.locked canvas {
+    background: #616161;
+}
+
+.cube-index-item p {
     font-size: 14px;
-    transition: background-color 0.3s;
+    color: #e0e0e0;
 }
 
-#coffee-link:hover {
-    background-color: #FFC107;
-}
+/* Responsive Design */
+@media (max-width: 768px) {
+    .game-container {
+        padding: 15px;
+    }
 
-#coffee-icon {
-    margin-right: 8px;
+    .fenced-area {
+        width: 300px;
+        height: 300px;
+    }
+
+    .frame-column {
+        gap: 10px;
+    }
+
+    .left-frames {
+        left: 10px;
+    }
+
+    .right-frames {
+        right: 10px;
+    }
+
+    .frame {
+        width: 50px;
+        height: 50px;
+    }
+
+    .frame canvas {
+        width: 40px;
+        height: 40px;
+    }
+
+    .cube-index-dropdown {
+        width: 90%;
+    }
+
+    .stats h2 {
+        font-size: 24px;
+    }
+
+    .stats p {
+        font-size: 16px;
+    }
+
+    .egg-shop h3 {
+        font-size: 20px;
+    }
+
+    .cube-info,
+    .hatch-notification,
+    .game-notification {
+        width: 90%;
+        padding: 20px;
+    }
 }
